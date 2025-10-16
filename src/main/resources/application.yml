@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: @profileActive@
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  gson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  application:
+    name: bs-manage
+
+mybatis:
+  mapper-locations: mybatis/**/*Mapper.xml
+  type-aliases-package: com.bs.manage.model.bean
+  configuration:                                          # dev中配置打印sql
+    cache-enabled: true                                   #开启二级缓存
+    map-underscore-to-camel-case: false                   #不开启驼峰自动映射,遵循php版本继续使用下划线
+
+logging:
+  config: classpath:config/@profileActive@/logback-spring.xml

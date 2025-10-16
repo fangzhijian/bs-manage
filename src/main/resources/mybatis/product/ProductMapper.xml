@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.product.ProductMapper">
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into product
+			(name,barcode,product_brand_id,product_project_id,created_at,
+			updated_at)
+		values
+			(#{name},#{barcode},#{product_brand_id},#{product_project_id},#{created_at},
+			#{updated_at})
+	</insert>
+
+    <update id="delete">
+		update product set delete_status = 1,deleted_at = #{deleted_at} where id = #{id}
+	</update>
+
+
+    <update id="updateAsBrandId">
+        update product set product_brand_id  = #{brandId} where product_project_id = #{projectId}
+    </update>
+
+    <update id="update">
+        update product
+        <set>
+            <if test="name != null and name !=''">
+                name = #{name},
+            </if>
+            <if test="barcode != null and barcode !=''">
+                barcode = #{barcode},
+            </if>
+            <if test="product_project_id != null">
+                product_project_id = #{product_project_id},
+            </if>
+            <if test="updated_at != null">
+                updated_at = #{updated_at},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getById" resultType="product">
+		select
+			id,name,barcode,product_brand_id,product_project_id,
+			created_at,updated_at
+		from product
+		where id = #{id} and delete_status = 0
+	</select>
+
+    <select id="getAll" resultType="product">
+		select
+			id,name,barcode,product_brand_id,product_project_id,
+			created_at,updated_at
+		from product
+		where delete_status = 0
+	</select>
+
+    <select id="getOneBySelectKey" resultType="product">
+        select
+        id,name,barcode,product_brand_id,product_project_id,
+        created_at,updated_at
+        from product
+        where delete_status = 0
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="name != null and name !=''">
+            and name = #{name}
+        </if>
+        <if test="barcode != null and barcode !=''">
+            and barcode = #{barcode}
+        </if>
+        <if test="product_brand_id != null">
+            and product_brand_id = #{product_brand_id}
+        </if>
+        <if test="product_project_id != null">
+            and product_project_id = #{product_project_id}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+        <if test="deleted_at != null">
+            and deleted_at = #{deleted_at}
+        </if>
+        <if test="delete_status != null">
+            and delete_status = #{delete_status}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="product">
+        select
+        id,name,barcode,product_brand_id,product_project_id,
+        created_at,updated_at
+        from product
+        where delete_status = 0
+        <if test="name != null and name !=''">
+            and name = #{name}
+        </if>
+        <if test="barcode != null and barcode !=''">
+            and barcode = #{barcode}
+        </if>
+        <if test="product_brand_id != null">
+            and product_brand_id = #{product_brand_id}
+        </if>
+        <if test="product_project_id != null">
+            and product_project_id = #{product_project_id}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+        <if test="deleted_at != null">
+            and deleted_at = #{deleted_at}
+        </if>
+        <if test="delete_status != null">
+            and delete_status = #{delete_status}
+        </if>
+
+    </select>
+
+    <select id="getByPage" resultType="product">
+        select
+        a.id,a.name,a.barcode,
+        a.product_brand_id,b.name as product_brand_name,
+        a.product_project_id,c.name as product_project_name,
+        c.is_major,a.created_at
+        from product a
+        left join product_brand b on b.id = product_brand_id
+        left join product_project c on c.id = product_project_id
+        where a.delete_status = 0
+        <if test="name != null and name !=''">
+            and a.name like concat('%',#{name},'%')
+        </if>
+        <if test="product_brand_id != null">
+            and a.product_brand_id = #{product_brand_id}
+        </if>
+        <if test="product_project_id != null">
+            and a.product_project_id = #{product_project_id}
+        </if>
+        order by a.created_at desc
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(1)
+        from product a
+        where a.delete_status = 0
+        <if test="name != null and name !=''">
+            and a.name like concat('%',#{name},'%')
+        </if>
+        <if test="product_brand_id != null">
+            and a.product_brand_id = #{product_brand_id}
+        </if>
+        <if test="product_project_id != null">
+            and a.product_project_id = #{product_project_id}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.erp.ReturnWarehouseEntryMapper">
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into return_warehouse_entry
+        (warehouse_entry_no,warehouse_entry_state,type,return_state,return_reason,
+        return_remark,return_creator,shop_name,original_order_num,order_num,
+        order_logistics_company,order_logistics_num,customer_net_name,return_no,warehouse_entry_user,
+        actual_warehouse,logistics_company,logistics_num,return_total_income,return_cost,
+        discounts,postage,other_balance,adjust_amount,expect_num,
+        goods_num,goods_type_num,adjust_num,remark,make_time,
+        update_time,audit_time,audit_user,push_state,push_error_msg,
+        distributor,source_type,created_at,updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.warehouse_entry_no},#{item.warehouse_entry_state},#{item.type},#{item.return_state},#{item.return_reason},
+            #{item.return_remark},#{item.return_creator},#{item.shop_name},#{item.original_order_num},#{item.order_num},
+            #{item.order_logistics_company},#{item.order_logistics_num},#{item.customer_net_name},#{item.return_no},#{item.warehouse_entry_user},
+            #{item.actual_warehouse},#{item.logistics_company},#{item.logistics_num},#{item.return_total_income},#{item.return_cost},
+            #{item.discounts},#{item.postage},#{item.other_balance},#{item.adjust_amount},#{item.expect_num},
+            #{item.goods_num},#{item.goods_type_num},#{item.adjust_num},#{item.remark},#{item.make_time},
+            #{item.update_time},#{item.audit_time},#{item.audit_user},#{item.push_state},#{item.push_error_msg},
+            #{item.distributor},#{item.source_type},#{item.created_at},#{item.updated_at})
+        </foreach>
+    </insert>
+
+    <select id="getLiveOrder" resultType="returnWarehouseEntry">
+        SELECT a.id,b.distributor,b.source_type,b.order_type
+        FROM return_warehouse_entry a LEFT JOIN sales_release b ON a.order_num = b.order_num WHERE
+        a.id &gt;= #{id} and b.source_type = 2
+    </select>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update return_warehouse_entry
+            <set>
+                <if test="item.warehouse_entry_no != null and item.warehouse_entry_no !='' ">
+                    warehouse_entry_no = #{item.warehouse_entry_no},
+                </if>
+                <if test="item.warehouse_entry_state != null and item.warehouse_entry_state !='' ">
+                    warehouse_entry_state = #{item.warehouse_entry_state},
+                </if>
+                <if test="item.type != null and item.type !='' ">
+                    type = #{item.type},
+                </if>
+                <if test="item.return_state != null and item.return_state !='' ">
+                    return_state = #{item.return_state},
+                </if>
+                <if test="item.return_reason != null and item.return_reason !='' ">
+                    return_reason = #{item.return_reason},
+                </if>
+                <if test="item.return_remark != null and item.return_remark !='' ">
+                    return_remark = #{item.return_remark},
+                </if>
+                <if test="item.return_creator != null and item.return_creator !='' ">
+                    return_creator = #{item.return_creator},
+                </if>
+                <if test="item.shop_name != null and item.shop_name !='' ">
+                    shop_name = #{item.shop_name},
+                </if>
+                <if test="item.original_order_num != null and item.original_order_num !='' ">
+                    original_order_num = #{item.original_order_num},
+                </if>
+                <if test="item.order_num != null and item.order_num !='' ">
+                    order_num = #{item.order_num},
+                </if>
+                <if test="item.order_logistics_company != null and item.order_logistics_company !='' ">
+                    order_logistics_company = #{item.order_logistics_company},
+                </if>
+                <if test="item.order_logistics_num != null and item.order_logistics_num !='' ">
+                    order_logistics_num = #{item.order_logistics_num},
+                </if>
+                <if test="item.customer_net_name != null and item.customer_net_name !='' ">
+                    customer_net_name = #{item.customer_net_name},
+                </if>
+                <if test="item.return_no != null and item.return_no !='' ">
+                    return_no = #{item.return_no},
+                </if>
+                <if test="item.warehouse_entry_user != null and item.warehouse_entry_user !='' ">
+                    warehouse_entry_user = #{item.warehouse_entry_user},
+                </if>
+                <if test="item.actual_warehouse != null and item.actual_warehouse !='' ">
+                    actual_warehouse = #{item.actual_warehouse},
+                </if>
+                <if test="item.logistics_company != null and item.logistics_company !='' ">
+                    logistics_company = #{item.logistics_company},
+                </if>
+                <if test="item.logistics_num != null and item.logistics_num !='' ">
+                    logistics_num = #{item.logistics_num},
+                </if>
+                <if test="item.return_total_income != null ">
+                    return_total_income = #{item.return_total_income},
+                </if>
+                <if test="item.return_cost != null ">
+                    return_cost = #{item.return_cost},
+                </if>
+                <if test="item.discounts != null ">
+                    discounts = #{item.discounts},
+                </if>
+                <if test="item.postage != null ">
+                    postage = #{item.postage},
+                </if>
+                <if test="item.other_balance != null ">
+                    other_balance = #{item.other_balance},
+                </if>
+                <if test="item.adjust_amount != null ">
+                    adjust_amount = #{item.adjust_amount},
+                </if>
+                <if test="item.expect_num != null ">
+                    expect_num = #{item.expect_num},
+                </if>
+                <if test="item.goods_num != null ">
+                    goods_num = #{item.goods_num},
+                </if>
+                <if test="item.goods_type_num != null ">
+                    goods_type_num = #{item.goods_type_num},
+                </if>
+                <if test="item.adjust_num != null ">
+                    adjust_num = #{item.adjust_num},
+                </if>
+                <if test="item.remark != null and item.remark !='' ">
+                    remark = #{item.remark},
+                </if>
+                <if test="item.make_time != null ">
+                    make_time = #{item.make_time},
+                </if>
+                <if test="item.update_time != null ">
+                    update_time = #{item.update_time},
+                </if>
+                <if test="item.audit_time != null ">
+                    audit_time = #{item.audit_time},
+                </if>
+                <if test="item.audit_user != null and item.audit_user !='' ">
+                    audit_user = #{item.audit_user},
+                </if>
+                <if test="item.push_state != null and item.push_state !='' ">
+                    push_state = #{item.push_state},
+                </if>
+                <if test="item.push_error_msg != null and item.push_error_msg !='' ">
+                    push_error_msg = #{item.push_error_msg},
+                </if>
+                <if test="item.distributor != null and item.distributor !='' ">
+                    distributor = #{item.distributor},
+                </if>
+                <if test="item.source_type != null ">
+                    source_type = #{item.source_type},
+                </if>
+                <if test="item.order_type != null and item.order_type !='' ">
+                    order_type = #{item.order_type},
+                </if>
+                <if test="item.updated_at != null ">
+                    updated_at = #{item.updated_at},
+                </if>
+
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,54 @@
+#redis配置
+spring:
+  data:
+    redis:
+      #redis连接地址
+      host: 47.110.143.150
+      #redis 端口
+      port: 6379
+      #redis密码
+      password: vZ7xX4rQ6sB6yY3e
+      #redis数据库编号
+      database: 0
+      #连接超时时间
+      timeout: 3000
+      lettuce:
+        pool:
+          max-active: 8  #最大活跃连接数
+          max-wait: -1ms #最大等待时间-1 表生无限等待
+          min-idle: 0 #最小空闲连接数
+          max-idle: 8 #最大空闲连接数
+
+
+  datasource:
+    url: jdbc:mysql:///bs-manage?serverTimezone=GMT%2B8&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+     initial-size: 5
+     min-idle: 5
+     max-active: 20
+     max-wait: 60000
+     time-between-eviction-runs-millis: 60000
+     min-evictable-idle-time-millis: 300000
+     validation-query: SELECT 1 FROM DUAL
+     test-while-idle: true
+     test-on-borrow: false
+     test-on-return: false
+server:
+  port: 8868
+
+#是否开启token登入验证
+token-check: false
+#文件上传的根路径
+uploadBase: /cloud_data
+#文件上传使用的域名
+uploadUrl:  http://data.hzleadspeed.com
+#服务器域名
+webUrl: http://www.hzleadspeed.com
+
+#钉钉应用秘钥
+agentIdDingDing: 799102886
+appKeyDingDing: dingswn4yxvqpcygpfxz
+appSecretDingDing: l-6Jug2Qtc9t0XNT1Avaeu5uBvhlXwa0K1i79Jb0pno7GUzkiEHs87BQgv9ourt7

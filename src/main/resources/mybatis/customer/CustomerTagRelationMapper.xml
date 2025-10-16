@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.customer.CustomerTagRelationMapper">
+
+
+    <insert id="batchAttachTags">
+        <foreach collection="list" item="item" separator=";">
+            insert into customer_tag_relation
+            (customer_id,user_tag_id)
+            select #{item.customer_id},#{item.user_tag_id} from dual where not exists
+            (select 1 from customer_tag_relation where customer_id = #{item.customer_id} and user_tag_id = #{item.user_tag_id})
+        </foreach>
+
+    </insert>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into customer_tag_relation
+			(customer_id,user_tag_id)
+		values
+			(#{customer_id},#{user_tag_id})
+	</insert>
+
+
+    <delete id="delete">
+		delete from customer_tag_relation where id = #{id}
+	</delete>
+
+    <delete id="detachTag">
+        delete from customer_tag_relation where customer_id = #{customer_id} and user_tag_id = #{tag_id}
+    </delete>
+
+    <update id="update">
+        update customer_tag_relation
+        <set>
+            <if test="customer_id != null">
+                customer_id = #{customer_id},
+            </if>
+            <if test="user_tag_id != null">
+                user_tag_id = #{user_tag_id},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getById" resultType="customerTagRelation">
+		select
+			id,customer_id,user_tag_id
+		from customer_tag_relation
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="customerTagRelation">
+		select
+			id,customer_id,user_tag_id
+		from customer_tag_relation
+	</select>
+
+    <select id="getOneBySelectKey" resultType="customerTagRelation">
+        select
+        id,customer_id,user_tag_id
+        from customer_tag_relation
+        where 1 = 1
+        <if test="customer_id != null">
+            and customer_id = #{customer_id}
+        </if>
+        <if test="user_tag_id != null">
+            and user_tag_id = #{user_tag_id}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="customerTagRelation">
+        select
+        id,customer_id,user_tag_id
+        from customer_tag_relation
+        where 1 = 1
+        <if test="customer_id != null">
+            and customer_id = #{customer_id}
+        </if>
+        <if test="user_tag_id != null">
+            and user_tag_id = #{user_tag_id}
+        </if>
+
+    </select>
+
+    <select id="getCustomerTags" resultType="customerTagRelation">
+        select a.customer_id,a.user_tag_id,b.name as user_tag_name
+        from customer_tag_relation a
+        left join user_tags_customer b on a.user_tag_id = b.id
+        where a.customer_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="existForTag" resultType="java.lang.Boolean">
+        select exists (select 1 from customer_tag_relation where user_tag_id = #{tagId})
+    </select>
+
+
+</mapper>

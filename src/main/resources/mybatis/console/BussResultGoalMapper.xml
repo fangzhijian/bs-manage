@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.console.BussResultGoalMapper">
+
+    <update id="insertDuplicateBatch" useGeneratedKeys="true" keyProperty="id">
+        <foreach collection="list" item="item" separator=";">
+            insert into buss_result_goal
+            (user_id,team_id,customer_category_id,product_project_id,goal_month,
+            amount_s,amount_t,amount_y,amount_c,created_at,
+            updated_at)
+            values
+            (#{item.user_id},#{item.team_id},#{item.customer_category_id},#{item.product_project_id},#{item.goal_month},
+            #{item.amount_s},#{item.amount_t},#{item.amount_y},#{item.amount_c},#{item.created_at},
+            #{item.updated_at})
+            on duplicate key update
+            amount_s = #{item.amount_s},amount_t = #{item.amount_t},amount_y = #{item.amount_y}, amount_c = #{item.amount_c},updated_at = #{item.updated_at}
+        </foreach>
+
+	</update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into buss_result_goal
+			(user_id,team_id,customer_category_id,product_project_id,goal_month,
+			amount_s,amount_t,amount_y,amount_c,created_at,
+			updated_at)
+		values
+			(#{user_id},#{team_id},#{customer_category_id},#{product_project_id},#{goal_month},
+			#{amount_s},#{amount_t},#{amount_y},#{amount_c},#{created_at},
+			#{updated_at})
+	</insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into buss_result_goal
+        (user_id,team_id,customer_category_id,product_project_id,goal_month,
+        amount_s,amount_t,amount_y,amount_c,created_at,
+        updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.user_id},#{item.team_id},#{item.customer_category_id},#{item.product_project_id},#{item.goal_month},
+            #{item.amount_s},#{item.amount_t},#{item.amount_y},#{item.amount_c},#{item.created_at},
+            #{item.updated_at})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+		delete from buss_result_goal where id = #{id}
+	</delete>
+
+    <delete id="deleteByIds">
+        delete from buss_result_goal where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update buss_result_goal
+        <set>
+            <if test="user_id != null ">
+                user_id = #{user_id},
+            </if>
+            <if test="team_id != null ">
+                team_id = #{team_id},
+            </if>
+            <if test="customer_category_id != null ">
+                customer_category_id = #{customer_category_id},
+            </if>
+            <if test="product_project_id != null ">
+                product_project_id = #{product_project_id},
+            </if>
+            <if test="goal_month != null ">
+                goal_month = #{goal_month},
+            </if>
+            <if test="amount_s != null ">
+                amount_s = #{amount_s},
+            </if>
+            <if test="amount_t != null ">
+                amount_t = #{amount_t},
+            </if>
+            <if test="amount_y != null ">
+                amount_y = #{amount_y},
+            </if>
+            <if test="amount_c != null ">
+                amount_c = #{amount_c},
+            </if>
+            <if test="updated_at != null ">
+                updated_at = #{updated_at},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update buss_result_goal
+            <set>
+                <if test="item.user_id != null ">
+                    user_id = #{item.user_id},
+                </if>
+                <if test="item.team_id != null ">
+                    team_id = #{item.team_id},
+                </if>
+                <if test="item.customer_category_id != null ">
+                    customer_category_id = #{item.customer_category_id},
+                </if>
+                <if test="item.product_project_id != null ">
+                    product_project_id = #{item.product_project_id},
+                </if>
+                <if test="item.goal_month != null ">
+                    goal_month = #{item.goal_month},
+                </if>
+                <if test="item.amount_s != null ">
+                    amount_s = #{item.amount_s},
+                </if>
+                <if test="item.amount_t != null ">
+                    amount_t = #{item.amount_t},
+                </if>
+                <if test="item.amount_y != null ">
+                    amount_y = #{item.amount_y},
+                </if>
+                <if test="item.amount_c != null ">
+                    amount_c = #{item.amount_c},
+                </if>
+                <if test="item.updated_at != null ">
+                    updated_at = #{item.updated_at},
+                </if>
+
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getById" resultType="bussResultGoal">
+		select
+			id,user_id,team_id,customer_category_id,product_project_id,
+			goal_month,amount_s,amount_t,amount_y,amount_c,
+			created_at,updated_at
+		from buss_result_goal
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="bussResultGoal">
+		select
+			id,user_id,team_id,customer_category_id,product_project_id,
+			goal_month,amount_s,amount_t,amount_y,amount_c,
+			created_at,updated_at
+		from buss_result_goal
+	</select>
+
+    <select id="getOneBySelectKey" resultType="bussResultGoal">
+        select
+        id,user_id,team_id,customer_category_id,product_project_id,
+        goal_month,amount_s,amount_t,amount_y,amount_c,
+        created_at,updated_at
+        from buss_result_goal
+        where 1 = 1
+        <if test="user_id != null">
+            and user_id = #{user_id}
+        </if>
+        <if test="team_id != null">
+            and team_id = #{team_id}
+        </if>
+        <if test="customer_category_id != null">
+            and customer_category_id = #{customer_category_id}
+        </if>
+        <if test="product_project_id != null">
+            and product_project_id = #{product_project_id}
+        </if>
+        <if test="goal_month != null">
+            and goal_month = #{goal_month}
+        </if>
+        <if test="amount_s != null">
+            and amount_s = #{amount_s}
+        </if>
+        <if test="amount_t != null">
+            and amount_t = #{amount_t}
+        </if>
+        <if test="amount_y != null">
+            and amount_y = #{amount_y}
+        </if>
+        <if test="amount_c != null">
+            and amount_c = #{amount_c}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="bussResultGoal">
+        select
+        id,user_id,team_id,customer_category_id,product_project_id,
+        goal_month,amount_s,amount_t,amount_y,amount_c,
+        created_at,updated_at
+        from buss_result_goal
+        where 1 = 1
+        <if test="user_id != null">
+            and user_id = #{user_id}
+        </if>
+        <if test="team_id != null">
+            and team_id = #{team_id}
+        </if>
+        <if test="customer_category_id != null">
+            and customer_category_id = #{customer_category_id}
+        </if>
+        <if test="product_project_id != null">
+            and product_project_id = #{product_project_id}
+        </if>
+        <if test="goal_month != null">
+            and goal_month = #{goal_month}
+        </if>
+        <if test="amount_s != null">
+            and amount_s = #{amount_s}
+        </if>
+        <if test="amount_t != null">
+            and amount_t = #{amount_t}
+        </if>
+        <if test="amount_y != null">
+            and amount_y = #{amount_y}
+        </if>
+        <if test="amount_c != null">
+            and amount_c = #{amount_c}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+    </select>
+
+    <select id="getTotalMoneyBySelectKey" resultType="java.math.BigDecimal">
+        select sum(amount_s+amount_t+amount_y+amount_c)
+        from buss_result_goal
+        where 1 = 1
+        <if test="user_id != null">
+            and user_id = #{user_id}
+        </if>
+        <if test="team_id != null">
+            and team_id = #{team_id}
+        </if>
+        <if test="customer_category_id != null">
+            and customer_category_id = #{customer_category_id}
+        </if>
+        <if test="product_project_id != null">
+            and product_project_id = #{product_project_id}
+        </if>
+        <if test="goal_month != null">
+            and goal_month = #{goal_month}
+        </if>
+        <if test="amount_s != null">
+            and amount_s = #{amount_s}
+        </if>
+        <if test="amount_t != null">
+            and amount_t = #{amount_t}
+        </if>
+        <if test="amount_y != null">
+            and amount_y = #{amount_y}
+        </if>
+        <if test="amount_c != null">
+            and amount_c = #{amount_c}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+    </select>
+
+    <select id="getListByUserIds" resultType="bussResultGoal">
+        select
+        a.id,a.user_id,a.team_id,a.customer_category_id,a.product_project_id,
+        a.goal_month,a.amount_s,a.amount_t,a.amount_y,a.amount_c,
+        b.product_brand_id
+        from buss_result_goal a
+        left join product_project b on b.id = a.product_project_id
+        where goal_month = #{goal_month}
+        <if test="userIds != null and userIds.size>0 ">
+            and user_id in
+            <foreach collection="userIds" item="item" separator="," open="(" close=")">
+               #{item}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

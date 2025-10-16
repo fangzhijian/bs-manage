@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.console.DateReportProductMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into date_report_product
+			(date_report_id,selected,product_id,product_name,amount,created_at,
+			updated_at)
+		values
+			(#{date_report_id},#{selected},#{product_id},#{product_name},#{amount},#{created_at},
+			#{updated_at})
+	</insert>
+
+    <insert id="insertBatch">
+        insert into date_report_product
+        (date_report_id,selected,product_id,product_name,amount,created_at,
+        updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.date_report_id},#{item.selected},#{item.product_id},#{item.product_name},#{item.amount},#{item.created_at},
+            #{item.updated_at})
+        </foreach>
+    </insert>
+
+
+    <delete id="delete">
+		delete from date_report_product where id = #{id}
+	</delete>
+
+    <delete id="deleteByDateReportId">
+        delete from date_report_product where date_report_id = #{dateReportId}
+    </delete>
+
+    <delete id="deleteByIds">
+        delete from date_report_product where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update date_report_product
+            <set>
+                <if test="item.selected != null">
+                    selected = #{item.selected},
+                </if>
+                <if test="item.product_name != null and item.product_name !=''">
+                    product_name = #{item.product_name},
+                </if>
+                <if test="item.amount != null">
+                    amount = #{item.amount},
+                </if>
+                <if test="item.updated_at != null">
+                    updated_at = #{item.updated_at},
+                </if>
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <update id="update">
+        update date_report_product
+        <set>
+            <if test="selected != null">
+                selected = #{selected},
+            </if>
+            <if test="product_name != null and product_name !=''">
+                product_name = #{product_name},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="updated_at != null">
+                updated_at = #{updated_at},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="existProduct" resultType="java.lang.Boolean">
+        select exists (select 1 from date_report_product where product_id = #{product_id})
+    </select>
+
+    <select id="getById" resultType="dateReportProduct">
+		select
+			id,date_report_id,selected,product_id,product_name,amount,
+			created_at,updated_at
+		from date_report_product
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="dateReportProduct">
+		select
+			id,date_report_id,selected,product_id,product_name,amount,
+			created_at,updated_at
+		from date_report_product
+	</select>
+
+    <select id="getOneBySelectKey" resultType="dateReportProduct">
+        select
+        id,date_report_id,selected,product_id,product_name,amount,
+        created_at,updated_at
+        from date_report_product
+        where 1 = 1
+        <if test="date_report_id != null">
+            and date_report_id = #{date_report_id}
+        </if>
+        <if test="selected != null">
+            and selected = #{selected}
+        </if>
+        <if test="product_id != null">
+            and product_id = #{product_id}
+        </if>
+        <if test="product_name != null and product_name !=''">
+            and product_name = #{product_name}
+        </if>
+        <if test="amount != null">
+            and amount = #{amount}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="dateReportProduct">
+        select
+        id,date_report_id,selected,product_id,product_name,amount,
+        created_at,updated_at
+        from date_report_product
+        where 1 = 1
+        <if test="date_report_id != null">
+            and date_report_id = #{date_report_id}
+        </if>
+        <if test="selected != null">
+            and selected = #{selected}
+        </if>
+        <if test="product_id != null">
+            and product_id = #{product_id}
+        </if>
+        <if test="product_name != null and product_name !=''">
+            and product_name = #{product_name}
+        </if>
+        <if test="amount != null">
+            and amount = #{amount}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+    </select>
+
+</mapper>

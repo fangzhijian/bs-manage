@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.kpi.KpiMainMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into kpi_main
+			(user_id,month,status,status_extra_msg,has_oneself,
+			created_at,updated_at)
+		values
+			(#{user_id},#{month},#{status},#{status_extra_msg},#{has_oneself},
+			#{created_at},#{updated_at})
+	</insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into kpi_main
+        (user_id,month,status,status_extra_msg,has_oneself,
+        created_at,updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.user_id},#{item.month},#{item.status},#{item.status_extra_msg},#{item.has_oneself},
+            #{item.created_at},#{item.updated_at})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+		delete from kpi_main where id = #{id}
+	</delete>
+
+    <delete id="deleteByIds">
+        delete from kpi_main where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update kpi_main
+        <set>
+            <if test="user_id != null ">
+                user_id = #{user_id},
+            </if>
+            <if test="month != null ">
+                month = #{month},
+            </if>
+            <if test="status != null ">
+                status = #{status},
+            </if>
+            <if test="status_extra_msg != null and status_extra_msg !='' ">
+                status_extra_msg = #{status_extra_msg},
+            </if>
+            <if test="has_oneself != null ">
+                has_oneself = #{has_oneself},
+            </if>
+            <if test="updated_at != null ">
+                updated_at = #{updated_at},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update kpi_main
+            <set>
+                <if test="item.user_id != null ">
+                    user_id = #{item.user_id},
+                </if>
+                <if test="item.month != null ">
+                    month = #{item.month},
+                </if>
+                <if test="item.status != null ">
+                    status = #{item.status},
+                </if>
+                <if test="item.status_extra_msg != null and item.status_extra_msg !='' ">
+                    status_extra_msg = #{item.status_extra_msg},
+                </if>
+                <if test="item.has_oneself != null ">
+                    has_oneself = #{item.has_oneself},
+                </if>
+                <if test="item.updated_at != null ">
+                    updated_at = #{item.updated_at},
+                </if>
+
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getById" resultType="kpiMain">
+		select
+			id,user_id,month,status,status_extra_msg,
+			has_oneself,created_at,updated_at
+		from kpi_main
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="kpiMain">
+		select
+			id,user_id,month,status,status_extra_msg,
+			has_oneself,created_at,updated_at
+		from kpi_main
+	</select>
+
+    <select id="getOneBySelectKey" resultType="kpiMain">
+        select
+        id,user_id,month,status,status_extra_msg,
+        has_oneself,created_at,updated_at
+        from kpi_main
+        where 1 = 1
+        <if test="user_id != null">
+            and user_id = #{user_id}
+        </if>
+        <if test="month != null">
+            and month = #{month}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="status_extra_msg != null and status_extra_msg !=''">
+            and status_extra_msg = #{status_extra_msg}
+        </if>
+        <if test="has_oneself != null">
+            and has_oneself = #{has_oneself}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="kpiMain">
+        select
+        id,user_id,month,status,status_extra_msg,
+        has_oneself,created_at,updated_at
+        from kpi_main
+        where 1 = 1
+        <if test="user_id != null">
+            and user_id = #{user_id}
+        </if>
+        <if test="month != null">
+            and month = #{month}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="status_extra_msg != null and status_extra_msg !=''">
+            and status_extra_msg = #{status_extra_msg}
+        </if>
+        <if test="has_oneself != null">
+            and has_oneself = #{has_oneself}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+        <if test="userIds != null and userIds.size>0 ">
+            and user_id in
+            <foreach collection="userIds" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(1)
+        from kpi_main a
+        left join  users u on u.id  = a.user_id
+        where 1 = 1
+        <if test="month != null">
+            and a.month = #{month}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+        <if test="has_finish == 1">
+
+            and a.status between 8 and 9
+        </if>
+        <if test="has_finish == 0">
+            and a.status not in (8,9)
+        </if>
+        <if test="username != null and username != ''">
+            and u.name = #{username}
+        </if>
+        <if test="userIds != null and userIds.size>0 ">
+            and a.user_id in
+            <foreach collection="userIds" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="ids != null and ids != '' ">
+            and FIND_IN_SET(a.id,#{ids})
+        </if>
+    </select>
+
+    <select id="getByPage" resultMap="kpiPageMap">
+        select s.* ,
+            b.id as b_id ,
+            b.kpi_id,b.kpi_type,b.kpi_label,b.kpi_content,b.kpi_goal,b.oneself_deal,b.actual_deal,
+            b.weight,b.oneself_score,b.superior_score
+        from (
+            select a.*,
+            u.name as username,u.parent_id
+            from kpi_main a
+            left join  users u on u.id  = a.user_id
+            where 1 = 1
+            <if test="month != null">
+                and a.month = #{month}
+            </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="has_finish == 1">
+
+                and a.status between 8 and 9
+            </if>
+            <if test="has_finish == 0">
+                and a.status not in (8,9)
+            </if>
+            <if test="username != null and username != ''">
+                and u.name = #{username}
+            </if>
+            <if test="userIds != null and userIds.size>0 ">
+                and a.user_id in
+                <foreach collection="userIds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="ids != null and ids != '' ">
+                and FIND_IN_SET(a.id,#{ids})
+            </if>
+            order by a.user_id
+            limit #{offset},#{limit}
+            ) as s
+        left join kpi_content b on  b.kpi_id = s.id
+
+    </select>
+
+    <resultMap id="kpiPageMap" type="com.bs.manage.model.bean.kpi.KpiMain">
+        <result property="id" column="id"/>
+        <result property="user_id" column="user_id"/>
+        <result property="month" column="month"/>
+        <result property="status" column="status"/>
+        <result property="status_extra_msg" column="status_extra_msg"/>
+        <result property="has_oneself" column="has_oneself"/>
+        <result property="username" column="username"/>
+        <result property="parent_id" column="parent_id"/>
+        <result property="created_at" column="created_at"/>
+        <association property="contents" resultMap="contentMap"/>
+    </resultMap>
+    <resultMap id="contentMap" type="com.bs.manage.model.bean.kpi.KpiContent">
+        <result property="id" column="b_id"/>
+        <result property="kpi_id" column="kpi_id"/>
+        <result property="kpi_type" column="kpi_type"/>
+        <result property="kpi_label" column="kpi_label"/>
+        <result property="kpi_content" column="kpi_content"/>
+        <result property="kpi_goal" column="kpi_goal"/>
+        <result property="oneself_deal" column="oneself_deal"/>
+        <result property="actual_deal" column="actual_deal"/>
+        <result property="weight" column="weight"/>
+        <result property="oneself_score" column="oneself_score"/>
+        <result property="superior_score" column="superior_score"/>
+    </resultMap>
+
+    <select id="getByUserIds" resultType="kpiMain">
+        select
+        id,user_id,month,status,status_extra_msg,
+        has_oneself,created_at,updated_at
+        from  kpi_main where month = #{month}
+        <if test="userIds != null and userIds.size>0">
+            and user_id in
+            <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                #{userId}
+            </foreach>
+        </if>
+    </select>
+</mapper>

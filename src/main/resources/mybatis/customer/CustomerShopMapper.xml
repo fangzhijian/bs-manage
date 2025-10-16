@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.customer.CustomerShopMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into customer_shop
+			(name,unique_id,customer_category_id,customer_category_id2,customer_category_id3,
+			customer_level_id,shop_url,province,city,business_address,
+			customer_product_category_id,customer_product_nation_id,trade_month,customer_gradation,trade_type,
+			parent_unique_id,created_at,updated_at)
+		values
+			(#{name},#{unique_id},#{customer_category_id},#{customer_category_id2},#{customer_category_id3},
+			#{customer_level_id},#{shop_url},#{province},#{city},#{business_address},
+			#{customer_product_category_id},#{customer_product_nation_id},#{trade_month},#{customer_gradation},#{trade_type},
+			#{parent_unique_id},#{created_at},#{updated_at})
+	</insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into customer_shop
+        (name,unique_id,customer_category_id,customer_category_id2,customer_category_id3,
+        customer_level_id,shop_url,province,city,business_address,
+        customer_product_category_id,customer_product_nation_id,trade_month,customer_gradation,trade_type,
+        parent_unique_id,created_at,updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name},#{item.unique_id},#{item.customer_category_id},#{item.customer_category_id2},#{item.customer_category_id3},
+            #{item.customer_level_id},#{item.shop_url},#{item.province},#{item.city},#{item.business_address},
+            #{item.customer_product_category_id},#{item.customer_product_nation_id},#{item.trade_month},#{item.customer_gradation},#{item.trade_type},
+            #{item.parent_unique_id},#{item.created_at},#{item.updated_at})
+        </foreach>
+    </insert>
+
+    <update id="delete">
+		update customer_shop set delete_status = 1,deleted_at = #{deleted_at} where id = #{id}
+	</update>
+
+    <update id="deleteByIds">
+        update customer_shop set delete_status = 1, deleted_at = #{deleted_at} where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="update">
+        update customer_shop
+        <set>
+            <if test="name != null and name !='' ">
+                name = #{name},
+            </if>
+            <if test="unique_id != null and unique_id !='' ">
+                unique_id = #{unique_id},
+            </if>
+            <if test="customer_category_id != null ">
+                customer_category_id = #{customer_category_id},
+            </if>
+            <if test="customer_category_id2 != null ">
+                customer_category_id2 = #{customer_category_id2},
+            </if>
+            <if test="customer_category_id3 != null ">
+                customer_category_id3 = #{customer_category_id3},
+            </if>
+            <if test="customer_category_id3 == null">
+                customer_category_id3 = null,
+            </if>
+            <if test="customer_level_id != null ">
+                customer_level_id = #{customer_level_id},
+            </if>
+            <if test="shop_url != null and shop_url !='' ">
+                shop_url = #{shop_url},
+            </if>
+            <if test="province != null and province !='' ">
+                province = #{province},
+            </if>
+            <if test="city != null and city !='' ">
+                city = #{city},
+            </if>
+            <if test="business_address != null and business_address !='' ">
+                business_address = #{business_address},
+            </if>
+            <if test="customer_product_category_id != null ">
+                customer_product_category_id = #{customer_product_category_id},
+            </if>
+            <if test="customer_product_nation_id != null ">
+                customer_product_nation_id = #{customer_product_nation_id},
+            </if>
+            <if test="trade_month != null ">
+                trade_month = #{trade_month},
+            </if>
+            <if test="customer_gradation != null and customer_gradation !='' ">
+                customer_gradation = #{customer_gradation},
+            </if>
+            <if test="trade_type != null ">
+                trade_type = #{trade_type},
+            </if>
+            <if test="parent_unique_id != null and parent_unique_id !='' ">
+                parent_unique_id = #{parent_unique_id},
+            </if>
+            <if test="updated_at != null ">
+                updated_at = #{updated_at},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update customer_shop
+            <set>
+                <if test="item.name != null and item.name !='' ">
+                    name = #{item.name},
+                </if>
+                <if test="item.unique_id != null and item.unique_id !='' ">
+                    unique_id = #{item.unique_id},
+                </if>
+                <if test="item.customer_category_id != null ">
+                    customer_category_id = #{item.customer_category_id},
+                </if>
+                <if test="item.customer_category_id2 != null ">
+                    customer_category_id2 = #{item.customer_category_id2},
+                </if>
+                <if test="item.customer_category_id3 != null ">
+                    customer_category_id3 = #{item.customer_category_id3},
+                </if>
+                <if test="item.customer_level_id != null ">
+                    customer_level_id = #{item.customer_level_id},
+                </if>
+                <if test="item.shop_url != null and item.shop_url !='' ">
+                    shop_url = #{item.shop_url},
+                </if>
+                <if test="item.province != null and item.province !='' ">
+                    province = #{item.province},
+                </if>
+                <if test="item.city != null and item.city !='' ">
+                    city = #{item.city},
+                </if>
+                <if test="item.business_address != null and item.business_address !='' ">
+                    business_address = #{item.business_address},
+                </if>
+                <if test="item.customer_product_category_id != null ">
+                    customer_product_category_id = #{item.customer_product_category_id},
+                </if>
+                <if test="item.customer_product_nation_id != null ">
+                    customer_product_nation_id = #{item.customer_product_nation_id},
+                </if>
+                <if test="item.trade_month != null ">
+                    trade_month = #{item.trade_month},
+                </if>
+                <if test="item.customer_gradation != null and item.customer_gradation !='' ">
+                    customer_gradation = #{item.customer_gradation},
+                </if>
+                <if test="item.trade_type != null ">
+                    trade_type = #{item.trade_type},
+                </if>
+                <if test="item.parent_unique_id != null and item.parent_unique_id !='' ">
+                    parent_unique_id = #{item.parent_unique_id},
+                </if>
+                <if test="item.updated_at != null ">
+                    updated_at = #{item.updated_at},
+                </if>
+
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getById" resultType="customerShop">
+		select
+			id,name,unique_id,customer_category_id,customer_category_id2,
+			customer_category_id3,customer_level_id,shop_url,province,city,
+			business_address,customer_product_category_id,customer_product_nation_id,trade_month,customer_gradation,
+			trade_type,parent_unique_id,created_at,updated_at,deleted_at,
+			delete_status
+		from customer_shop
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="customerShop">
+		select
+			id,name,unique_id,customer_category_id,customer_category_id2,
+			customer_category_id3,customer_level_id,shop_url,province,city,
+			business_address,customer_product_category_id,customer_product_nation_id,trade_month,customer_gradation,
+			trade_type,parent_unique_id,created_at,updated_at
+		from customer_shop
+		where delete_status = 0
+	</select>
+
+    <select id="getOneBySelectKey" resultType="customerShop">
+        select
+        id,name,unique_id,customer_category_id,customer_category_id2,
+        customer_category_id3,customer_level_id,shop_url,province,city,
+        business_address,customer_product_category_id,customer_product_nation_id,trade_month,customer_gradation,
+        trade_type,parent_unique_id,created_at,updated_at
+        from customer_shop
+        where delete_status = 0
+        <if test="name != null and name !=''">
+            and name = #{name}
+        </if>
+        <if test="unique_id != null and unique_id !=''">
+            and unique_id = #{unique_id}
+        </if>
+        <if test="customer_category_id != null">
+            and customer_category_id = #{customer_category_id}
+        </if>
+        <if test="customer_category_id2 != null">
+            and customer_category_id2 = #{customer_category_id2}
+        </if>
+        <if test="customer_category_id3 != null">
+            and customer_category_id3 = #{customer_category_id3}
+        </if>
+        <if test="customer_level_id != null">
+            and customer_level_id = #{customer_level_id}
+        </if>
+        <if test="shop_url != null and shop_url !=''">
+            and shop_url = #{shop_url}
+        </if>
+        <if test="province != null and province !=''">
+            and province = #{province}
+        </if>
+        <if test="city != null and city !=''">
+            and city = #{city}
+        </if>
+        <if test="business_address != null and business_address !=''">
+            and business_address = #{business_address}
+        </if>
+        <if test="customer_product_category_id != null">
+            and customer_product_category_id = #{customer_product_category_id}
+        </if>
+        <if test="customer_product_nation_id != null">
+            and customer_product_nation_id = #{customer_product_nation_id}
+        </if>
+        <if test="trade_month != null">
+            and trade_month = #{trade_month}
+        </if>
+        <if test="customer_gradation != null and customer_gradation !=''">
+            and customer_gradation = #{customer_gradation}
+        </if>
+        <if test="trade_type != null">
+            and trade_type = #{trade_type}
+        </if>
+        <if test="parent_unique_id != null and parent_unique_id !=''">
+            and parent_unique_id = #{parent_unique_id}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="customerShop">
+        select
+        id,name,unique_id,customer_category_id,customer_category_id2,
+        customer_category_id3,customer_level_id,shop_url,province,city,
+        business_address,customer_product_category_id,customer_product_nation_id,trade_month,customer_gradation,
+        trade_type,parent_unique_id,created_at,updated_at
+        from customer_shop
+        where delete_status = 0
+        <if test="name != null and name !=''">
+            and name = #{name}
+        </if>
+        <if test="unique_id != null and unique_id !=''">
+            and unique_id = #{unique_id}
+        </if>
+        <if test="customer_category_id != null">
+            and customer_category_id = #{customer_category_id}
+        </if>
+        <if test="customer_category_id2 != null">
+            and customer_category_id2 = #{customer_category_id2}
+        </if>
+        <if test="customer_category_id3 != null">
+            and customer_category_id3 = #{customer_category_id3}
+        </if>
+        <if test="customer_level_id != null">
+            and customer_level_id = #{customer_level_id}
+        </if>
+        <if test="shop_url != null and shop_url !=''">
+            and shop_url = #{shop_url}
+        </if>
+        <if test="province != null and province !=''">
+            and province = #{province}
+        </if>
+        <if test="city != null and city !=''">
+            and city = #{city}
+        </if>
+        <if test="business_address != null and business_address !=''">
+            and business_address = #{business_address}
+        </if>
+        <if test="customer_product_category_id != null">
+            and customer_product_category_id = #{customer_product_category_id}
+        </if>
+        <if test="customer_product_nation_id != null">
+            and customer_product_nation_id = #{customer_product_nation_id}
+        </if>
+        <if test="trade_month != null">
+            and trade_month = #{trade_month}
+        </if>
+        <if test="customer_gradation != null and customer_gradation !=''">
+            and customer_gradation = #{customer_gradation}
+        </if>
+        <if test="trade_type != null">
+            and trade_type = #{trade_type}
+        </if>
+        <if test="parent_unique_id != null and parent_unique_id !=''">
+            and parent_unique_id = #{parent_unique_id}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+    </select>
+
+    <select id="getShopDetail" resultType="customerShop">
+        select
+            a.id,a.name,a.unique_id,
+            a.customer_category_id,
+            a.customer_category_id2,
+            a.customer_category_id3,
+            a.customer_level_id, c.name as customer_level_name,
+            a.shop_url,a.province,a.city,a.business_address,
+            a.customer_product_category_id,e.name as customer_product_category_name,
+            a.customer_product_nation_id,f.name as customer_product_nation_name,
+            a.trade_month,a.customer_gradation,
+            a.trade_type,a.created_at
+        from customer_shop a
+        left join customer_level c on c.id = a.customer_level_id
+        left join customer_product_category e on e.id = a.customer_product_category_id
+        left join customer_product_nation f on f.id = a.customer_product_nation_id
+        where a.id = #{id}
+    </select>
+
+    <update id="deleteByParentUniqueId">
+        update customer_shop set delete_status = 1,deleted_at = now() where parent_unique_id = #{parentUniqueId}
+    </update>
+
+    <select id="getAllShop" resultType="customerShop">
+        select
+            a.id,a.name,a.unique_id,a.province,a.city,
+            a.customer_category_id,b.name as customer_category_name,
+            a.customer_level_id, c.name as customer_level_name,
+            a.customer_gradation,a.created_at
+        from customer_shop a
+        left join customer_category b on b.id = a.customer_category_id
+        left join customer_level c on c.id = a.customer_level_id
+        where a.delete_status = 0 and a.parent_unique_id = #{parentUniqueId}
+    </select>
+
+    <select id="judgeRepeat" resultType="customer">
+        select  a.name,a.unique_id,a.parent_unique_id
+        from customer_shop a
+        where a.delete_status = 0
+        and (a.name like concat('%',#{keyword},'%') or a.unique_id like concat('%',#{keyword},'%') )
+        limit 10
+    </select>
+
+</mapper>

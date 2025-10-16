@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.upload.UploadDataMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into upload_data
+			(original_name,file_name,compress_name,size,height,
+			width,url,compress_url,has_use,warn_level,
+			upload_status,upload_msg,source,remark)
+		values
+			(#{original_name},#{file_name},#{compress_name},#{size},#{height},
+			#{width},#{url},#{compress_url},#{has_use},#{warn_level},
+			#{upload_status},#{upload_msg},#{source},#{remark})
+	</insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into upload_data
+        (original_name,file_name,compress_name,size,height,
+        width,url,compress_url,has_use,warn_level,
+        upload_status,upload_msg,source,remark)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.original_name},#{item.file_name},#{item.compress_name},#{item.size},#{item.height},
+            #{item.width},#{item.url},#{item.compress_url},#{item.has_use},#{item.warn_level},
+            #{item.upload_status},#{item.upload_msg},#{item.source},#{item.remark})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+		delete from upload_data where id = #{id}
+	</delete>
+
+    <delete id="deleteByIds">
+        delete from upload_data where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update upload_data
+        <set>
+            <if test="original_name != null and original_name !='' ">
+                original_name = #{original_name},
+            </if>
+            <if test="file_name != null and file_name !='' ">
+                file_name = #{file_name},
+            </if>
+            <if test="compress_name != null and compress_name !='' ">
+                compress_name = #{compress_name},
+            </if>
+            <if test="size != null ">
+                size = #{size},
+            </if>
+            <if test="height != null ">
+                height = #{height},
+            </if>
+            <if test="width != null ">
+                width = #{width},
+            </if>
+            <if test="url != null and url !='' ">
+                url = #{url},
+            </if>
+            <if test="compress_url != null and compress_url !='' ">
+                compress_url = #{compress_url},
+            </if>
+            <if test="has_use != null ">
+                has_use = #{has_use},
+            </if>
+            <if test="warn_level != null ">
+                warn_level = #{warn_level},
+            </if>
+            <if test="upload_status != null ">
+                upload_status = #{upload_status},
+            </if>
+            <if test="upload_msg != null and upload_msg !='' ">
+                upload_msg = #{upload_msg},
+            </if>
+            <if test="source != null ">
+                source = #{source},
+            </if>
+            <if test="remark != null and remark !='' ">
+                remark = #{remark},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update upload_data
+            <set>
+                <if test="item.original_name != null and item.original_name !='' ">
+                    original_name = #{item.original_name},
+                </if>
+                <if test="item.file_name != null and item.file_name !='' ">
+                    file_name = #{item.file_name},
+                </if>
+                <if test="item.compress_name != null and item.compress_name !='' ">
+                    compress_name = #{item.compress_name},
+                </if>
+                <if test="item.size != null ">
+                    size = #{item.size},
+                </if>
+                <if test="item.height != null ">
+                    height = #{item.height},
+                </if>
+                <if test="item.width != null ">
+                    width = #{item.width},
+                </if>
+                <if test="item.url != null and item.url !='' ">
+                    url = #{item.url},
+                </if>
+                <if test="item.compress_url != null and item.compress_url !='' ">
+                    compress_url = #{item.compress_url},
+                </if>
+                <if test="item.has_use != null ">
+                    has_use = #{item.has_use},
+                </if>
+                <if test="item.warn_level != null ">
+                    warn_level = #{item.warn_level},
+                </if>
+                <if test="item.upload_status != null ">
+                    upload_status = #{item.upload_status},
+                </if>
+                <if test="item.upload_msg != null and item.upload_msg !='' ">
+                    upload_msg = #{item.upload_msg},
+                </if>
+                <if test="item.source != null ">
+                    source = #{item.source},
+                </if>
+                <if test="item.remark != null and item.remark !='' ">
+                    remark = #{item.remark},
+                </if>
+
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getById" resultType="uploadData">
+		select
+			id,original_name,file_name,compress_name,size,
+			height,width,url,compress_url,has_use,
+			warn_level,upload_status,upload_msg,source,remark
+		from upload_data
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="uploadData">
+		select
+			id,original_name,file_name,compress_name,size,
+			height,width,url,compress_url,has_use,
+			warn_level,upload_status,upload_msg,source,remark
+		from upload_data
+	</select>
+
+    <select id="getOneBySelectKey" resultType="uploadData">
+        select
+        id,original_name,file_name,compress_name,size,
+        height,width,url,compress_url,has_use,
+        warn_level,upload_status,upload_msg,source,remark
+        from upload_data
+        where 1 = 1
+        <if test="original_name != null and original_name !=''">
+            and original_name = #{original_name}
+        </if>
+        <if test="file_name != null and file_name !=''">
+            and file_name = #{file_name}
+        </if>
+        <if test="compress_name != null and compress_name !=''">
+            and compress_name = #{compress_name}
+        </if>
+        <if test="size != null">
+            and size = #{size}
+        </if>
+        <if test="height != null">
+            and height = #{height}
+        </if>
+        <if test="width != null">
+            and width = #{width}
+        </if>
+        <if test="url != null and url !=''">
+            and url = #{url}
+        </if>
+        <if test="compress_url != null and compress_url !=''">
+            and compress_url = #{compress_url}
+        </if>
+        <if test="has_use != null">
+            and has_use = #{has_use}
+        </if>
+        <if test="warn_level != null">
+            and warn_level = #{warn_level}
+        </if>
+        <if test="upload_status != null">
+            and upload_status = #{upload_status}
+        </if>
+        <if test="upload_msg != null and upload_msg !=''">
+            and upload_msg = #{upload_msg}
+        </if>
+        <if test="source != null">
+            and source = #{source}
+        </if>
+        <if test="remark != null and remark !=''">
+            and remark = #{remark}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="uploadData">
+        select
+        id,original_name,file_name,compress_name,size,
+        height,width,url,compress_url,has_use,
+        warn_level,upload_status,upload_msg,source,remark
+        from upload_data
+        where 1 = 1
+        <if test="original_name != null and original_name !=''">
+            and original_name = #{original_name}
+        </if>
+        <if test="file_name != null and file_name !=''">
+            and file_name = #{file_name}
+        </if>
+        <if test="compress_name != null and compress_name !=''">
+            and compress_name = #{compress_name}
+        </if>
+        <if test="size != null">
+            and size = #{size}
+        </if>
+        <if test="height != null">
+            and height = #{height}
+        </if>
+        <if test="width != null">
+            and width = #{width}
+        </if>
+        <if test="url != null and url !=''">
+            and url = #{url}
+        </if>
+        <if test="compress_url != null and compress_url !=''">
+            and compress_url = #{compress_url}
+        </if>
+        <if test="has_use != null">
+            and has_use = #{has_use}
+        </if>
+        <if test="warn_level != null">
+            and warn_level = #{warn_level}
+        </if>
+        <if test="upload_status != null">
+            and upload_status = #{upload_status}
+        </if>
+        <if test="upload_msg != null and upload_msg !=''">
+            and upload_msg = #{upload_msg}
+        </if>
+        <if test="source != null">
+            and source = #{source}
+        </if>
+        <if test="remark != null and remark !=''">
+            and remark = #{remark}
+        </if>
+
+    </select>
+
+</mapper>

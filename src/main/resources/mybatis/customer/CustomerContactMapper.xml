@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.customer.CustomerContactMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into customer_contact
+			(customer_id,person,person_title,mobile,wangwang,
+			wx,created_at,updated_at)
+		values
+			(#{customer_id},#{person},#{person_title},#{mobile},#{wangwang},
+			#{wx},#{created_at},#{updated_at})
+	</insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into customer_contact
+        (customer_id,person,person_title,mobile,wangwang,
+        wx,created_at,updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.customer_id},#{item.person},#{item.person_title},#{item.mobile},#{item.wangwang},
+            #{item.wx},#{item.created_at},#{item.updated_at})
+        </foreach>
+    </insert>
+
+    <insert id="insertBatchAsCustomer">
+        insert into customer_contact (customer_id,person,person_title,mobile,wangwang,wx,created_at,updated_at)
+        values
+        <foreach collection="list" item="item"  separator=",">
+            (#{customer_id},#{item.person},#{item.person_title},#{item.mobile},#{item.wangwang},#{item.wx},#{item.created_at},#{item.updated_at})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+		delete from customer_contact where id = #{id}
+	</delete>
+
+    <delete id="deleteByIds">
+        delete from customer_contact where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update customer_contact
+        <set>
+            <if test="customer_id != null ">
+                customer_id = #{customer_id},
+            </if>
+            <if test="person != null and person !='' ">
+                person = #{person},
+            </if>
+            <if test="person_title != null and person_title !='' ">
+                person_title = #{person_title},
+            </if>
+            <if test="mobile != null and mobile !='' ">
+                mobile = #{mobile},
+            </if>
+            <if test="wangwang != null and wangwang !='' ">
+                wangwang = #{wangwang},
+            </if>
+            <if test="wx != null and wx !='' ">
+                wx = #{wx},
+            </if>
+            <if test="updated_at != null ">
+                updated_at = #{updated_at},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update customer_contact
+            <set>
+                <if test="item.customer_id != null">
+                    customer_id = #{item.customer_id},
+                </if>
+                <if test="item.person != null and item.person !=''">
+                    person = #{item.person},
+                </if>
+                <if test="item.person_title != null and item.person_title !=''">
+                    person_title = #{item.person_title},
+                </if>
+                <if test="item.mobile != null and item.mobile !=''">
+                    mobile = #{item.mobile},
+                </if>
+                <if test="item.wangwang != null and item.wangwang !=''">
+                    wangwang = #{item.wangwang},
+                </if>
+                <if test="item.wx != null and item.wx !=''">
+                    wx = #{item.wx},
+                </if>
+                <if test="item.updated_at != null">
+                    updated_at = #{item.updated_at},
+                </if>
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getById" resultType="customerContact">
+		select
+			id,customer_id,person,person_title,mobile,
+			wangwang,wx,created_at,updated_at
+		from customer_contact
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="customerContact">
+		select
+			id,customer_id,person,person_title,mobile,
+			wangwang,wx,created_at,updated_at
+		from customer_contact
+	</select>
+
+    <select id="getOneBySelectKey" resultType="customerContact">
+        select
+        id,customer_id,person,person_title,mobile,
+        wangwang,wx,created_at,updated_at
+        from customer_contact
+        where 1 = 1
+        <if test="customer_id != null">
+            and customer_id = #{customer_id}
+        </if>
+        <if test="person != null and person !=''">
+            and person = #{person}
+        </if>
+        <if test="person_title != null and person_title !=''">
+            and person_title = #{person_title}
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and mobile = #{mobile}
+        </if>
+        <if test="wangwang != null and wangwang !=''">
+            and wangwang = #{wangwang}
+        </if>
+        <if test="wx != null and wx !=''">
+            and wx = #{wx}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="customerContact">
+        select
+        id,customer_id,person,person_title,mobile,
+        wangwang,wx,created_at,updated_at
+        from customer_contact
+        where 1 = 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="customer_id != null">
+            and customer_id = #{customer_id}
+        </if>
+        <if test="person != null and person !=''">
+            and person = #{person}
+        </if>
+        <if test="person_title != null and person_title !=''">
+            and person_title = #{person_title}
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and mobile = #{mobile}
+        </if>
+        <if test="wangwang != null and wangwang !=''">
+            and wangwang = #{wangwang}
+        </if>
+        <if test="wx != null and wx !=''">
+            and wx = #{wx}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+    </select>
+</mapper>

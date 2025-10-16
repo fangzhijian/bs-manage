@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.notify.NotifyKpiMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into notify_kpi
+			(kpi_id,text,notify_user,has_read,created_at,
+			updated_at)
+		values
+			(#{kpi_id},#{text},#{notify_user},#{has_read},#{created_at},
+			#{updated_at})
+	</insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into notify_kpi
+        (kpi_id,text,notify_user,has_read,created_at,
+        updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.kpi_id},#{item.text},#{item.notify_user},#{item.has_read},#{item.created_at},
+            #{item.updated_at})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+		delete from notify_kpi where id = #{id}
+	</delete>
+
+    <delete id="deleteByIds">
+        delete from notify_kpi where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update notify_kpi
+        <set>
+            <if test="kpi_id != null ">
+                kpi_id = #{kpi_id},
+            </if>
+            <if test="text != null and text !='' ">
+                text = #{text},
+            </if>
+            <if test="notify_user != null ">
+                notify_user = #{notify_user},
+            </if>
+            <if test="has_read != null ">
+                has_read = #{has_read},
+            </if>
+            <if test="updated_at != null ">
+                updated_at = #{updated_at},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update notify_kpi
+            <set>
+                <if test="item.kpi_id != null ">
+                    kpi_id = #{item.kpi_id},
+                </if>
+                <if test="item.text != null and item.text !='' ">
+                    text = #{item.text},
+                </if>
+                <if test="item.notify_user != null ">
+                    notify_user = #{item.notify_user},
+                </if>
+                <if test="item.has_read != null ">
+                    has_read = #{item.has_read},
+                </if>
+                <if test="item.updated_at != null ">
+                    updated_at = #{item.updated_at},
+                </if>
+
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getById" resultType="notifyKpi">
+		select
+			id,kpi_id,text,notify_user,has_read,
+			created_at,updated_at
+		from notify_kpi
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="notifyKpi">
+		select
+			id,kpi_id,text,notify_user,has_read,
+			created_at,updated_at
+		from notify_kpi
+	</select>
+
+    <select id="getOneBySelectKey" resultType="notifyKpi">
+        select
+        id,kpi_id,text,notify_user,has_read,
+        created_at,updated_at
+        from notify_kpi
+        where 1 = 1
+        <if test="kpi_id != null">
+            and kpi_id = #{kpi_id}
+        </if>
+        <if test="text != null and text !=''">
+            and text = #{text}
+        </if>
+        <if test="notify_user != null">
+            and notify_user = #{notify_user}
+        </if>
+        <if test="has_read != null">
+            and has_read = #{has_read}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="notifyKpi">
+        select
+        id,kpi_id,text,notify_user,has_read,
+        created_at,updated_at
+        from notify_kpi
+        where 1 = 1
+        <if test="kpi_id != null">
+            and kpi_id = #{kpi_id}
+        </if>
+        <if test="text != null and text !=''">
+            and text = #{text}
+        </if>
+        <if test="notify_user != null">
+            and notify_user = #{notify_user}
+        </if>
+        <if test="has_read != null">
+            and has_read = #{has_read}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+    </select>
+
+    <select id="countByUnRead" resultType="java.lang.Integer">
+        select count(1) from notify_kpi where notify_user = #{notifyUser} and has_read = 0
+    </select>
+
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(1) from notify_kpi where notify_user = #{notifyUser}
+    </select>
+
+    <select id="getByPage" resultType="notifyKpi">
+        select
+        id,kpi_id,text,notify_user,has_read,
+        created_at,updated_at
+        from notify_kpi
+        where notify_user = #{notifyUser}
+        order by has_read asc,created_at desc
+        limit #{offset},#{limit}
+    </select>
+
+</mapper>

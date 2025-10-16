@@ -1,0 +1,61 @@
+spring:
+  redis:
+    sentinel:
+      master: mymaster
+      nodes: 47.102.137.78:27001,47.102.137.78:27002,47.102.137.78:27003
+    password: leadRedis$2020
+    lettuce:
+      pool:
+        max-active: 600         #连接池最大连接数（使用负值表示没有限制)
+        max-wait: 3000          #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 100           #连接池中的最大空闲连接
+        min-idle: 5             #连接池中的最小空闲连接
+    timeout: 3000               #连接超时时间（毫秒）
+    database: 0
+
+  datasource:
+    druid:
+      #用户配置
+      url: jdbc:mysql://47.102.137.78:3306/bs-manage?serverTimezone=GMT%2B8&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+      username: root
+      password: leadMysql$2020
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      #连接池配置
+      connection-init-sqls: set names utf8mb4
+      default-transaction-isolation: 2        #修改默认隔离级别为读提交,数值参考Isolation枚举类
+      initial-size: 5
+      max-active: 1000
+      min-idle: 1
+      max-wait: 3000
+      test-while-idle: true
+      validation-query: select 1
+      test-on-return: false
+      test-on-borrow: true
+      time-between-eviction-runs-millis: 12000
+      #监控配置
+      web-stat-filter:    #关闭StatFilter
+        enabled: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: lead
+        login-password: leadMysql$druid
+server:
+  port: 8868
+  tomcat:
+    max-threads: 500
+
+#是否开启token登入验证
+token-check: true
+#文件上传的根路径
+uploadBase: /cloud_data
+#文件上传使用的域名
+uploadUrl:  http://data.hzleadspeed.com
+#服务器域名
+webUrl: http://www.hzleadspeed.com
+
+#钉钉应用秘钥
+agentIdDingDing: 799102886
+appKeyDingDing: dingswn4yxvqpcygpfxz
+appSecretDingDing: l-6Jug2Qtc9t0XNT1Avaeu5uBvhlXwa0K1i79Jb0pno7GUzkiEHs87BQgv9ourt7

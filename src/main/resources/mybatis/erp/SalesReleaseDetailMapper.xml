@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.erp.SalesReleaseDetailMapper">
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into sales_release_detail
+        (order_num,original_order_num,sun_original_no,original_sun_order_no,order_type,
+        pay_account,stock_out_num,warehouse,warehouse_type,shop_name,
+        delivery_no_state,delivery_state,sorting_number,shop_no,goods_no,
+        goods_name,goods_short_name,brand,category,specification,
+        specification_name,bar_code,goods_nums,good_origin_unit_price,good_origin_total_pay,
+        order_discounts,postage,goods_amount,goods_total_amount,goods_discounts,
+        goods_total_pay,goods_cost,goods_total_cost,order_pay_amount,amount_receivable,
+        before_refund_amount,single_pay_amount,apportion_postage,estimate_postage,postage_cost,
+        order_pack_cost,order_gross_profit,gross_profit_rate,customer_net_name,consignee,
+        id_card,receiving_area,receiver_address,receiver_mobile_phone,receiver_phone,
+        logistics_company,actual_weight,estimate_weight,need_invoice,make_order_user,
+        print_user,order_picking_user,pack_user,inspector_user,salesman,
+        examine_goods_user,print_num,logistics_print_status,deliver_print_status,sorting_print_status,
+        logistics_num,sorting_num,external_order_num,pay_time,deliver_time,
+        gift_way,buyer_message,customer_service_remark,print_remark,remark,
+        packaging,combination_package_no,split_combination_package,combination_package_num,volume,
+        distributor,order_time,audit_time,distributor_no,source_type,
+        created_at,updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.order_num},#{item.original_order_num},#{item.sun_original_no},#{item.original_sun_order_no},#{item.order_type},
+            #{item.pay_account},#{item.stock_out_num},#{item.warehouse},#{item.warehouse_type},#{item.shop_name},
+            #{item.delivery_no_state},#{item.delivery_state},#{item.sorting_number},#{item.shop_no},#{item.goods_no},
+            #{item.goods_name},#{item.goods_short_name},#{item.brand},#{item.category},#{item.specification},
+            #{item.specification_name},#{item.bar_code},#{item.goods_nums},#{item.good_origin_unit_price},#{item.good_origin_total_pay},
+            #{item.order_discounts},#{item.postage},#{item.goods_amount},#{item.goods_total_amount},#{item.goods_discounts},
+            #{item.goods_total_pay},#{item.goods_cost},#{item.goods_total_cost},#{item.order_pay_amount},#{item.amount_receivable},
+            #{item.before_refund_amount},#{item.single_pay_amount},#{item.apportion_postage},#{item.estimate_postage},#{item.postage_cost},
+            #{item.order_pack_cost},#{item.order_gross_profit},#{item.gross_profit_rate},#{item.customer_net_name},#{item.consignee},
+            #{item.id_card},#{item.receiving_area},#{item.receiver_address},#{item.receiver_mobile_phone},#{item.receiver_phone},
+            #{item.logistics_company},#{item.actual_weight},#{item.estimate_weight},#{item.need_invoice},#{item.make_order_user},
+            #{item.print_user},#{item.order_picking_user},#{item.pack_user},#{item.inspector_user},#{item.salesman},
+            #{item.examine_goods_user},#{item.print_num},#{item.logistics_print_status},#{item.deliver_print_status},#{item.sorting_print_status},
+            #{item.logistics_num},#{item.sorting_num},#{item.external_order_num},#{item.pay_time},#{item.deliver_time},
+            #{item.gift_way},#{item.buyer_message},#{item.customer_service_remark},#{item.print_remark},#{item.remark},
+            #{item.packaging},#{item.combination_package_no},#{item.split_combination_package},#{item.combination_package_num},#{item.volume},
+            #{item.distributor},#{item.order_time},#{item.audit_time},#{item.distributor_no},#{item.source_type},
+            #{item.created_at},#{item.updated_at})
+        </foreach>
+    </insert>
+
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.configures.ConfiguresMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into configures
+			(code,code_value,note,created_at,updated_at)
+		values
+			(#{code},#{code_value},#{note},#{created_at},#{updated_at})
+	</insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into configures
+        (code,code_value,note,created_at,updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code},#{item.code_value},#{item.note},#{item.created_at},#{item.updated_at})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+		delete from configures where id = #{id}
+	</delete>
+
+    <delete id="deleteByIds">
+        delete from configures where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update configures
+        <set>
+            <if test="code != null ">
+                code = #{code},
+            </if>
+            <if test="code_value != null and code_value !='' ">
+                code_value = #{code_value},
+            </if>
+            <if test="note != null and note !='' ">
+                note = #{note},
+            </if>
+            <if test="updated_at != null ">
+                updated_at = #{updated_at},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" separator=";">
+            update configures
+            <set>
+                <if test="item.code != null ">
+                    code = #{item.code},
+                </if>
+                <if test="item.code_value != null and item.code_value !='' ">
+                    code_value = #{item.code_value},
+                </if>
+                <if test="item.note != null and item.note !='' ">
+                    note = #{item.note},
+                </if>
+                <if test="item.updated_at != null ">
+                    updated_at = #{item.updated_at},
+                </if>
+
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getById" resultType="configures">
+		select
+			id,code,code_value,note,created_at,
+			updated_at
+		from configures
+		where id = #{id}
+	</select>
+
+    <select id="getAll" resultType="configures">
+		select
+			id,code,code_value,note,created_at,
+			updated_at
+		from configures
+		order by code asc
+	</select>
+
+    <select id="getOneBySelectKey" resultType="configures">
+        select
+        id,code,code_value,note,created_at,
+        updated_at
+        from configures
+        where 1 = 1
+        <if test="code != null">
+            and code = #{code}
+        </if>
+        <if test="code_value != null and code_value !=''">
+            and code_value = #{code_value}
+        </if>
+        <if test="note != null and note !=''">
+            and note = #{note}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+        limit 1
+    </select>
+
+    <select id="getAllBySelectKey" resultType="configures">
+        select
+        id,code,code_value,note,created_at,
+        updated_at
+        from configures
+        where 1 = 1
+        <if test="code != null">
+            and code = #{code}
+        </if>
+        <if test="code_value != null and code_value !=''">
+            and code_value = #{code_value}
+        </if>
+        <if test="note != null and note !=''">
+            and note = #{note}
+        </if>
+        <if test="created_at != null">
+            and created_at = #{created_at}
+        </if>
+        <if test="updated_at != null">
+            and updated_at = #{updated_at}
+        </if>
+
+    </select>
+
+
+
+</mapper>

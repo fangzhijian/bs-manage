@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.manage.mapper.account.TeamMapper">
+
+    <insert id="insert">
+              insert into team(name,created_at,updated_at)
+              values (#{name},#{created_at},#{updated_at})
+        </insert>
+
+    <update id="delete">
+		update team set delete_status = 1,deleted_at = #{deleted_at} where id = #{id}
+	</update>
+
+    <update id="update">
+        update team
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="leader_id != null">
+                leader_id = #{leader_id},
+            </if>
+            <if test="updated_at != null">
+                updated_at = #{updated_at},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getById" resultType="team">
+        select * from team where id = #{id} and delete_status = 0
+    </select>
+
+    <select id="getAll" resultType="team">
+        select a.id,a.name,a.created_at,a.updated_at,a.leader_id,c.name as leader_name,
+        (select count(1) FROM users b WHERE b.team_id = a.id and b.status = 1 )as users_count
+        from team a
+        left join users c on c.id = a.leader_id
+        where delete_status = 0
+    </select>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into team
+        (name,leader_id,created_at,updated_at)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name},#{item.leader_id},#{item.created_at},#{item.updated_at})
+        </foreach>
+    </insert>
+
+</mapper>
