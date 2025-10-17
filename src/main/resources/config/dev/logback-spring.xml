@@ -23,7 +23,7 @@
             <pattern> %boldBlue(%d{yyyy-MM-dd HH:mm:ss}) %highlight(%-5level) %logger{0} %cyan(-%msg%n)</pattern>
         </encoder>
     </appender>
-
+    <logger name = "com.bs.manage.mapper" level="DEBUG"/>
     <!-- root级别 INFO -->
     <root level="INFO">
         <!-- 控制台输出 -->

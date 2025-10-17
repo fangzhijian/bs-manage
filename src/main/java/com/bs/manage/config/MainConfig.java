@@ -37,11 +37,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import jakarta.servlet.MultipartConfigElement;
+import org.springframework.web.client.RestTemplate;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -200,5 +204,16 @@ public class MainConfig {
             }
         };
     }
+    @Bean
+    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
+        return new RestTemplate(factory);
+    }
 
+    @Bean
+    public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setReadTimeout(150000); // ms
+        factory.setConnectTimeout(150000); // ms
+        return factory;
+    }
 }

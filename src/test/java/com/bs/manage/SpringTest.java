@@ -35,6 +35,7 @@ import com.bs.manage.until.ExcelUtils;
 import com.bs.manage.until.MailUtil;
 import com.bs.manage.until.NumberUtil;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -46,14 +47,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -116,8 +120,26 @@ public class SpringTest {
     KpiMainService kpiMainService;
     @Value("${webUrl}")
     private String DEFAULT_DING_MSG_URL;
+    @Autowired
+    private RestTemplate restTemplate;
 
+    @Test
+    public void test() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("message", "怎么进件开户");
+        jsonObject.addProperty("stream", "false");//是否开启流式传输
+        jsonObject.addProperty("re_chat", "true");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth("application-af30aa0d9b80aa893ef348ca6c2c87dd");
+        HttpEntity<String> httpEntity = new HttpEntity<>(jsonObject.toString(), headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                "http://120.26.23.172:18080/chat/api/chat_message/0199e6aa-2184-7670-bcd9-4736c5a74194",
+                httpEntity, String.class);
+        System.out.println(response.getStatusCode());
+        System.out.println(response.getBody());
 
+    }
 
     @Test
     public void jdbc() {
@@ -183,17 +205,18 @@ public class SpringTest {
         String token = "application-af30aa0d9b80aa893ef348ca6c2c87dd";
         WebClient webClient = WebClient.builder().baseUrl("http://120.26.23.172:18080")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader("Authorization","Bearer "+token).build();
+                .defaultHeader("Authorization", "Bearer " + token).build();
 
-        MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
-        map.add("message","怎么进件开户");
-        map.add("stream","false");
-        map.add("re_chat","true");
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("message", "怎么进件开户");
+        map.add("stream", "false");
+        map.add("re_chat", "true");
 
         XBaseAiJson flux = webClient.post().uri(uri).body(BodyInserters.fromFormData(map))
                 .retrieve().bodyToMono(XBaseAiJson.class).block();
         System.out.println(flux);
     }
+
     @Test
     public void redis() {
 //        ResponseJson userId = dingDingService.getUserId("");

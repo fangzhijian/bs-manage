@@ -1,19 +1,26 @@
 package com.bs.manage;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.bs.manage.code.PubCode;
 import com.bs.manage.code.RiskAppealEnum;
+import com.bs.manage.exception.BusinessException;
 import com.bs.manage.model.bean.account.Team;
 import com.bs.manage.model.bean.account.User;
 import com.bs.manage.model.bean.account.UserTags;
 import com.bs.manage.model.bean.erp.ReturnWarehouseEntry;
 import com.bs.manage.model.bean.erp.SalesRelease;
+import com.bs.manage.model.json.XBaseAiJson;
 import com.bs.manage.model.param.console.BoardParam;
 import com.bs.manage.until.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -26,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.*;
 import java.lang.ref.Reference;
@@ -84,11 +92,39 @@ public class DemoTest {
 //        connection.setAutoCommit(false);
 //        connection.close();
 
+//        WebClient webClient = WebClient.create();
+//        String s = webClient.post().uri("http://localhost:8868/test1").retrieve().bodyToMono(String.class).block();
+//        System.out.println(s);
+        String uri = "/chat/api/chat_message/0199e6aa-2184-7670-bcd9-4736c5a74194";
+        String token = "application-af30aa0d9b80aa893ef348ca6c2c87dd";
+        WebClient webClient = WebClient.builder().baseUrl("http://120.26.23.172:18080")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader("Authorization", "Bearer " + token).build();
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("message", "怎么进件开户");
+        map.add("stream", "false");
+        map.add("re_chat", "true");
+
+        try {
+            XBaseAiJson flux = webClient.post().uri(uri).body(BodyInserters.fromFormData(map))
+                    .retrieve()
+                    .bodyToMono(XBaseAiJson.class)
+                    .block();
+        }catch (Exception e){
+            String message = e.getMessage();
+            if(message.contains("500 Internal Server")){
+
+            }
+        }
+
+
+
     }
 
-
-    private static void pageList(Integer limit, Integer offset) {
-
+    @Test
+    public void test1() {
     }
+
 
 }

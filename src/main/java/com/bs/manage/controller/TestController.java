@@ -1,9 +1,14 @@
 package com.bs.manage.controller;
 
+import com.bs.manage.mapper.account.UserMapper;
+import com.bs.manage.model.bean.account.User;
+import com.bs.manage.model.json.ResponseJson;
 import com.bs.manage.model.json.XBaseAiJson;
 import com.bs.manage.model.json.XBaseStreamJson;
+import jakarta.annotation.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
@@ -26,6 +31,9 @@ import java.util.stream.Collectors;
 @RestController
 public class TestController {
 
+    @Resource
+    private UserMapper userMapper;
+
     @GetMapping(value = "/test")
     public XBaseAiJson test(){
 //        String uri = "/chat/api/open";
@@ -43,5 +51,18 @@ public class TestController {
         XBaseAiJson flux = webClient.post().uri(uri).body(BodyInserters.fromFormData(map))
                 .retrieve().bodyToMono(XBaseAiJson.class).block();
         return flux;
+    }
+
+    @GetMapping("test1")
+    @Transactional
+    public ResponseJson test1(){
+        userMapper.update(User.builder().id(1L).team_id(1L).build());
+        setDate();
+        System.out.println(10/0);
+        return new ResponseJson().setCode(500).setMsg("坏了");
+    }
+
+    private void setDate(){
+        userMapper.update(User.builder().id(2L).team_id(1L).build());
     }
 }
