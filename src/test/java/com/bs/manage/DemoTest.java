@@ -15,10 +15,10 @@ import com.bs.manage.until.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -114,7 +114,7 @@ public class DemoTest {
         }catch (Exception e){
             String message = e.getMessage();
             if(message.contains("500 Internal Server")){
-
+                System.out.println(message);
             }
         }
 
@@ -124,6 +124,15 @@ public class DemoTest {
 
     @Test
     public void test1() {
+        List<Team> teams = new ArrayList<>();
+        teams.add(Team.builder().id(3L).build());
+        teams.add(Team.builder().id(2L).build());
+        teams.add(Team.builder().id(5L).build());
+        teams.add(Team.builder().id(1L).build());
+        teams.add(Team.builder().id(4L).build());
+        teams.sort((x, y) -> y.getId().compareTo(x.getId()));
+
+        teams.forEach(x -> System.out.println(x.getId()));
     }
 
 

@@ -142,6 +142,16 @@ public class SpringTest {
     }
 
     @Test
+    public void testRedis() {
+        Team team = new Team();
+        team.setId(8L);
+        team.setCreated_at(LocalDateTime.now());
+        redisTemplate.opsForValue().set("test", team);
+        Team team1 = (Team) redisTemplate.opsForValue().get("test");
+        System.out.println(team1);
+    }
+
+    @Test
     public void jdbc() {
         List<ReturnWarehouseDetail> returnWarehouseDetailList = returnWarehouseDetailService.getLiveOrder(0);
         returnWarehouseDetailService.updateBatch(returnWarehouseDetailList);

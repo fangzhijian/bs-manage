@@ -2,9 +2,11 @@ package com.bs.manage.config;
 
 import com.bs.manage.until.DateUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -106,7 +108,8 @@ public class MainConfig {
     public ObjectMapper commonObjectMapper() {
         ObjectMapper objectMapper = this.initObjectMapper();
         //记录class,使之能反序列各种复杂结构
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL
+                , JsonTypeInfo.As.WRAPPER_ARRAY);
         objectMapper.findAndRegisterModules();
         return objectMapper;
     }
@@ -117,11 +120,12 @@ public class MainConfig {
      */
     @Bean(name = "redisTemplate")
     @Primary
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory, @Qualifier("commonObjectMapper") ObjectMapper objectMapper) {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory,
+                                                       @Qualifier("commonObjectMapper") ObjectMapper objectMapper) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         template.setEnableTransactionSupport(true);
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(objectMapper, Object.class);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         template.setHashKeySerializer(stringRedisSerializer);
         template.setHashValueSerializer(jackson2JsonRedisSerializer);
@@ -132,9 +136,6 @@ public class MainConfig {
         template.setEnableTransactionSupport(false);
         return template;
     }
-
-
-
 
 
     /**
@@ -204,6 +205,7 @@ public class MainConfig {
             }
         };
     }
+
     @Bean
     public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
         return new RestTemplate(factory);

@@ -3,6 +3,7 @@ package com.bs.manage.model.bean.common;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@ToString(callSuper=true)
 @SuperBuilder
 @NoArgsConstructor
 public class CommonDeleteModel extends CommonModel {

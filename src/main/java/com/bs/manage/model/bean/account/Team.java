@@ -4,6 +4,7 @@ import com.bs.manage.model.bean.common.CommonDeleteModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.apache.ibatis.type.Alias;
 
@@ -13,6 +14,7 @@ import org.apache.ibatis.type.Alias;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@ToString(callSuper=true)
 @Alias("team")
 @SuperBuilder
 @NoArgsConstructor
