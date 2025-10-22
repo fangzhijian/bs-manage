@@ -27,7 +27,12 @@ public enum PubCode {
 
     USER_STATUS(8, "账号ID%s已停用或离职"),
 
-    KPI_NOT_MAKE(11,"绩效未制定");
+    KPI_NOT_MAKE(11,"绩效未制定"),
+
+    P2006_REPEAT_CLICK(2006,"操作频率过快,请稍后再试"),
+
+    P2007_RESOURCE_CLICK(2007,"当前人数过多,稍后再试试看"),
+    ;
 
     public static final int SUCCESS_CODE = 0;
 

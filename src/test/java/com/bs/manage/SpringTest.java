@@ -67,13 +67,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -143,12 +137,15 @@ public class SpringTest {
 
     @Test
     public void testRedis() {
-        Team team = new Team();
-        team.setId(8L);
-        team.setCreated_at(LocalDateTime.now());
-        redisTemplate.opsForValue().set("test", team);
-        Team team1 = (Team) redisTemplate.opsForValue().get("test");
-        System.out.println(team1);
+        String key = "test";
+        redisTemplate.delete(key);
+        redisTemplate.opsForZSet().add(key, "test1", 2);
+        redisTemplate.opsForZSet().add(key, "test2", 1);
+        redisTemplate.opsForZSet().add(key, "test3", 3);
+        redisTemplate.opsForZSet().add(key, "test0", 6);
+        redisTemplate.opsForZSet().add(key, "test8", 5);
+        Set<Object> objects = redisTemplate.opsForZSet().reverseRange(key, 2, 3);
+        System.out.println(objects);
     }
 
     @Test
