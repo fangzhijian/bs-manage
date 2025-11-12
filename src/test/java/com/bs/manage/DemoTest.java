@@ -49,12 +49,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -135,5 +130,9 @@ public class DemoTest {
         teams.forEach(x -> System.out.println(x.getId()));
     }
 
+    @Test
+    public void test2() {
+        System.out.println(Base64.getUrlEncoder().encodeToString("1000".getBytes(StandardCharsets.UTF_8)));
+    }
 
 }
