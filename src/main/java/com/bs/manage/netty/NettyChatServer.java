@@ -9,6 +9,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,6 +57,8 @@ public class NettyChatServer implements CommandLineRunner {
                             pipeline.addLast(new ChunkedWriteHandler());
                             //添加WebSocket协议处理器，用于处理WebSocket握手、消息传输等操作。
                             pipeline.addLast(new WebSocketServerProtocolHandler("/ws/chat"));
+                            //空闲检测（120秒无读写则关闭连接）
+                            pipeline.addLast(new IdleStateHandler(120, 120, 0));
                             //添加WebSocket处理器，用于处理客户端与服务器端之间的数据交换，实现自定义的业务逻辑。
                             pipeline.addLast(new NettyServerHandler());
                         }

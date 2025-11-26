@@ -8,6 +8,8 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.InetSocketAddress;
+import java.net.SocketException;
 import java.util.Map;
 
 /**
@@ -22,7 +24,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
 
     // 接收客户端消息（SimpleChannelInboundHandler 自动释放消息资源）
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame frame) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
         log.info("收到客户端消息：{}", frame.text());
         // 1. 解析 JSON 消息
         ChatMessage message = JSON.parseObject(frame.text(), ChatMessage.class);
@@ -42,9 +44,16 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
         }
     }
 
+    //客户端建立连接
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+        log.info("客户端已建立连接，ip：{} 端口：{}", socketAddress.getAddress().getHostAddress(), socketAddress.getPort());
+    }
+
     // 客户端断开连接
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx) {
         // 移除离线用户
         String offlineUserId = getUserIdByChannel(ctx.channel());
         if (offlineUserId != null) {
@@ -56,23 +65,25 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
             offlineNotice.setSenderId("system");
             ChannelManager.broadcast(offlineNotice);
         }
-        super.channelInactive(ctx);
     }
 
     // 空闲检测事件（超时关闭连接）
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
         if (evt instanceof IdleStateEvent) {
             log.info("客户端空闲超时，关闭连接");
             ctx.close();
         }
-        super.userEventTriggered(ctx, evt);
     }
 
     // 异常处理
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error("连接异常：", cause);
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        if (cause instanceof SocketException) {
+            log.info("连接异常：{}", cause.getMessage());
+        } else {
+            log.error("连接异常：", cause);
+        }
         ctx.close();
     }
 
