@@ -39,6 +39,10 @@ spring:
 server:
   port: 8868
 
+netty:
+  chat:
+    port: 8088 # Netty 服务端口（WebSocket 连接）
+
 #是否开启token登入验证
 token-check: false
 #文件上传的根路径
