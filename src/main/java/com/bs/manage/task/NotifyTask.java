@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * fzj
  * 消息
  */
-@Component
+//@Component
 public class NotifyTask {
 
     private final UserService userService;

@@ -30,7 +30,7 @@ import java.util.List;
  * fzj
  * 控制台仪表盘的统计任务
  */
-@Component
+//@Component
 public class ConsoleTask {
 
     private final UserService userService;

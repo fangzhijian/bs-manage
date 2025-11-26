@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * 2020/6/15 10:26
  * fzj
  */
-@Component
+//@Component
 public class KpiTask {
 
     @Value("${webUrl}")
