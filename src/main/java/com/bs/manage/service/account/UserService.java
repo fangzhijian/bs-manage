@@ -117,4 +117,6 @@ public interface UserService extends CommonService<User> {
     void insertToNotifyCustomerRelease();
 
     List<User> getByIds(List<Long> list);
+
+    void insertTest();
 }

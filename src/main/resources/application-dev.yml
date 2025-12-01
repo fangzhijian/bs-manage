@@ -3,11 +3,9 @@ spring:
   data:
     redis:
       #redis连接地址
-      host: 47.110.143.150
+      host: 127.0.0.1
       #redis 端口
       port: 6379
-      #redis密码
-      password: vZ7xX4rQ6sB6yY3e
       #redis数据库编号
       database: 0
       #连接超时时间
@@ -18,7 +16,6 @@ spring:
           max-wait: -1ms #最大等待时间-1 表生无限等待
           min-idle: 0 #最小空闲连接数
           max-idle: 8 #最大空闲连接数
-
 
   datasource:
     url: jdbc:mysql:///bs-manage?serverTimezone=GMT%2B8&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false
@@ -36,12 +33,18 @@ spring:
      test-while-idle: true
      test-on-borrow: false
      test-on-return: false
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: dev
+
 server:
   port: 8868
 
 netty:
   chat:
-    port: 8088 # Netty 服务端口（WebSocket 连接）
+    port: 8089 # Netty 服务端口（WebSocket 连接）
 
 #是否开启token登入验证
 token-check: false

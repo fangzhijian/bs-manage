@@ -137,15 +137,8 @@ public class SpringTest {
 
     @Test
     public void testRedis() {
-        String key = "test";
-        redisTemplate.delete(key);
-        redisTemplate.opsForZSet().add(key, "test1", 2);
-        redisTemplate.opsForZSet().add(key, "test2", 1);
-        redisTemplate.opsForZSet().add(key, "test3", 3);
-        redisTemplate.opsForZSet().add(key, "test0", 6);
-        redisTemplate.opsForZSet().add(key, "test8", 5);
-        Set<Object> objects = redisTemplate.opsForZSet().reverseRange(key, 2, 3);
-        System.out.println(objects);
+        Integer o = (Integer) redisTemplate.opsForValue().get("test12");
+        System.out.println(o);
     }
 
     @Test

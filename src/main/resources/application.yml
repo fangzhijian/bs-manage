@@ -10,7 +10,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   application:
     name: bs-manage
-
 mybatis:
   mapper-locations: mybatis/**/*Mapper.xml
   type-aliases-package: com.bs.manage.model.bean

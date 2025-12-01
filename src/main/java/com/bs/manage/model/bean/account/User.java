@@ -2,6 +2,7 @@ package com.bs.manage.model.bean.account;
 
 import com.bs.manage.model.bean.common.CommonModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -43,5 +44,14 @@ public class User extends CommonModel {
     private Integer customer_limit;     //客户上限
 
     private List<Integer> roleIds;      //指定权限集合
+
+    private UserInfo  user_info;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor(staticName = "of")
+    public static class UserInfo{
+        private String nick_name;
+    }
 
 }

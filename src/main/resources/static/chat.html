@@ -47,7 +47,7 @@
         }
 
         // 连接 Netty WebSocket 服务（注意协议是 ws，端口是 Netty 配置的 8088）
-        ws = new WebSocket(`ws://${window.location.hostname}:8088/ws/chat`);
+        ws = new WebSocket(`ws://${window.location.hostname}:8089/ws/chat`);
 
         // 连接成功
         ws.onopen = function() {

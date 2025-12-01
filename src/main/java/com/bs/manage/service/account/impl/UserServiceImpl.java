@@ -415,6 +415,11 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
         return userMapper.getByIds(list);
     }
 
+    @Override
+    public void insertTest() {
+        userMapper.insert(User.builder().name("李四").email("78").password("23").build());
+    }
+
     /**
      * @param user      账号信息
      * @param checkNull 是否检查账号为空

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -15,11 +16,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
@@ -113,6 +117,18 @@ public class ExceptionConfig {
         return ResponseJson.fail(PubCode.PARAM_MISSING.code(), errorMsg);
     }
 
+    @ExceptionHandler(value = IOException.class)
+    public ResponseJson ioException(IOException ioException, HttpServletRequest request) {
+        logErrorRequestInfo(request);
+        String message = ioException.getMessage();
+        if (message.contains("你的主机中的软件中止了一个已建立的连接")) {
+            log.info(message);
+            return null;
+        } else {
+            log.error(message);
+            return ResponseJson.fail(PubCode.SYSTEM_ERROR.code(), message);
+        }
+    }
 
     //捕捉自定义异常及系统异常验证处理
     @ExceptionHandler(value = Exception.class)
@@ -125,7 +141,7 @@ public class ExceptionConfig {
             log.error(e.getMessage());
             return ResponseJson.fail(((MyRunException) e).getCode(), e.getMessage());
         } else {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
             return ResponseJson.fail(PubCode.SYSTEM_ERROR.code(), PubCode.SYSTEM_ERROR.message());
         }
     }
