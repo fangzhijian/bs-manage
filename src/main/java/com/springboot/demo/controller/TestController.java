@@ -28,7 +28,7 @@ public class TestController {
      * @return ai对话内容
      */
     @GetMapping(value = "/tmAI")
-    public XBaseAiJson test() {
+    public XBaseAiJson tmAI() {
         String uri = "/chat/api/chat_message/0199dce2-f617-7c12-a875-6309facd4457";
         String token = "application-af30aa0d9b80aa893ef348ca6c2c87dd";
         WebClient webClient = WebClient.builder().baseUrl("http://120.26.23.172:18080")
@@ -40,5 +40,10 @@ public class TestController {
         map.add("re_chat", "true");
         return webClient.post().uri(uri).body(BodyInserters.fromFormData(map))
                 .retrieve().bodyToMono(XBaseAiJson.class).block();
+    }
+
+    @GetMapping("test")
+    public void test() {
+
     }
 }

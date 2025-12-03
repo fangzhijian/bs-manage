@@ -35,7 +35,7 @@ import java.util.TimeZone;
  * fzj
  */
 @Configuration
-public class MyMvcConfig implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
      * 是否开启token验证
@@ -45,7 +45,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
     private final TokenInterceptor tokenInterceptor;
 
-    public MyMvcConfig(TokenInterceptor tokenInterceptor) {
+    public WebMvcConfig(TokenInterceptor tokenInterceptor) {
         this.tokenInterceptor = tokenInterceptor;
     }
 
@@ -58,6 +58,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
     //静态文件映射
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/favicon.ico")
+                .addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/META-INF/resources/")
                 .addResourceLocations("classpath:/resources/");

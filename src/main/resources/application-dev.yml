@@ -3,7 +3,8 @@ spring:
   data:
     redis:
       #redis连接地址
-      host: 127.0.0.1
+      host: 120.55.249.102
+      password: banmu888
       #redis 端口
       port: 6379
       #redis数据库编号
@@ -31,8 +32,15 @@ spring:
      min-evictable-idle-time-millis: 300000
      validation-query: SELECT 1 FROM DUAL
      test-while-idle: true
-     test-on-borrow: false
+     test-on-borrow: true
      test-on-return: false
+     web-stat-filter:
+       enabled: true
+     stat-view-servlet:
+       enabled: true
+       url-pattern: /druid/*
+       login-username: admin
+       login-password: admin
   cloud:
     nacos:
       discovery:
