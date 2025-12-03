@@ -9,7 +9,6 @@ import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +20,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
@@ -40,29 +40,24 @@ public class ExceptionConfig {
     public ResponseJson bindException(Exception exception, HttpServletRequest request) {
         logErrorRequestInfo(request);
 
-        List<ObjectError> allErrors;
-        if (exception instanceof BindException bindException) {
-            allErrors = bindException.getAllErrors();
-        } else {
-            MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) exception;
-            allErrors = methodArgumentNotValidException.getBindingResult().getAllErrors();
+        List<FieldError> fieldErrors = null;
+        if (exception instanceof MethodArgumentNotValidException) {
+            fieldErrors = ((MethodArgumentNotValidException) exception).getBindingResult().getFieldErrors();
+        }
+        if (exception instanceof BindException) {
+            fieldErrors = ((BindException) exception).getBindingResult().getFieldErrors();
+        }
+        if (fieldErrors == null) {
+            return ResponseJson.fail(PubCode.PARAM_ERROR.code, "参数没有校验");
         }
 
-        StringBuilder sb = new StringBuilder();
-        int size = allErrors.size();
-        for (int i = 0; i < size; i++) {
-            ObjectError objectError = allErrors.get(i);
-            if (objectError instanceof FieldError fieldError) {
-                sb.append(fieldError.getField()).append(fieldError.getDefaultMessage());
-            } else {
-                sb.append(objectError.getDefaultMessage());
-            }
-            if (i != size - 1) {
-                sb.append("、");
-            }
+        List<String> defaultMessages = new ArrayList<>(fieldErrors.size());
+        for (FieldError fieldError : fieldErrors) {
+            defaultMessages.add(fieldError.getField() + ":" + fieldError.getDefaultMessage());
         }
-        log.error(sb.toString());
-        return ResponseJson.fail(PubCode.PARAM_ERROR.code, sb.toString());
+        String message = defaultMessages.toString();
+        log.error(message);
+        return ResponseJson.fail(PubCode.PARAM_ERROR.code, message);
     }
 
 

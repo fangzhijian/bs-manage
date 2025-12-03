@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.demo.config.ManageApplication;
 import com.springboot.demo.model.bean.account.User;
 import com.springboot.demo.service.user.UserService;
+import com.springboot.demo.until.page.PageDTO;
+import com.springboot.demo.until.page.PageUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,9 @@ public class SpringTest {
 
     @Test
     public void test() {
-
+        Page<User> page = userService.lambdaQuery().page(new Page<>(1,10));
+        PageDTO<User> pageDTO = PageUtils.convert(page);
+        System.out.println(JSON.toJSONString(pageDTO));
     }
 
 }
