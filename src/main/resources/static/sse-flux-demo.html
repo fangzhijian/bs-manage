@@ -33,7 +33,7 @@
         }
 
         // 建立新的 SSE 连接
-        eventSource = new EventSource(`/sseConnect?clientId=${clientId}`);
+        eventSource = new EventSource(`/connect?clientId=${clientId}`);
 
         // 监听通用消息（没有指定 event name 的消息）
         eventSource.onmessage = function (event) {
@@ -49,10 +49,16 @@
         eventSource.addEventListener("INIT", function (event) {
             appendMessage(`[INIT]: ${event.data}`);
         });
+        // 监听特定名称的事件 (例如：HEARTBEAT)
+        eventSource.addEventListener("HEARTBEAT", function (event) {
+            appendMessage(`[HEARTBEAT]: ${event.data}`);
+            // console.log(`[HEARTBEAT]: ${event.data}`)
+        });
 
         eventSource.onerror = function (err) {
             console.error("SSE error:", err);
             appendMessage('[错误] 连接出错'+err.type);
+            setTimeout(connectSSE, 1000);
         };
     }
 
@@ -67,7 +73,7 @@
     function sendMessage() {
         const clientId = document.getElementById('clientId').value;
         const message = document.getElementById('message').value;
-        fetch(`/sseSend?clientId=${clientId}&message=${encodeURIComponent(message)}`)
+        fetch(`/push?clientId=${clientId}&message=${encodeURIComponent(message)}`)
             .then(response => response.text())
             .then(data => console.log(data));
     }

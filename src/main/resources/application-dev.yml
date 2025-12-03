@@ -18,7 +18,7 @@ spring:
           max-idle: 8 #最大空闲连接数
 
   datasource:
-    url: jdbc:mysql:///bs-manage?serverTimezone=GMT%2B8&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql:///springboot-demo?serverTimezone=GMT%2B8&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -38,7 +38,7 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
         namespace: dev
-
+        register-enabled: false
 server:
   port: 8868
 
@@ -50,12 +50,3 @@ netty:
 token-check: false
 #文件上传的根路径
 uploadBase: /cloud_data
-#文件上传使用的域名
-uploadUrl:  http://data.hzleadspeed.com
-#服务器域名
-webUrl: http://www.hzleadspeed.com
-
-#钉钉应用秘钥
-agentIdDingDing: 799102886
-appKeyDingDing: dingswn4yxvqpcygpfxz
-appSecretDingDing: l-6Jug2Qtc9t0XNT1Avaeu5uBvhlXwa0K1i79Jb0pno7GUzkiEHs87BQgv9ourt7

@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>bs-manage</groupId>
-    <artifactId>bs-manage</artifactId>
+    <artifactId>springboot-demo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>bs-manage-parent</name>
     <description>布诗云客户管理系统</description>
@@ -21,6 +21,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <skipTests>true</skipTests>
+        <redisson.version>3.50.0</redisson.version>
+        <hutool.version>5.8.35</hutool.version>
     </properties>
 
     <dependencies>
@@ -54,6 +56,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <!-- 使用redisson集成分布式锁等 -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>${redisson.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.github.houbb</groupId>
@@ -68,11 +76,15 @@
             <version>2.0.45</version>
         </dependency>
 
-        <!--数据库-->
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.5</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>3.5.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+            <version>3.5.10.1</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -96,6 +108,11 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!-- 文件上传-->
