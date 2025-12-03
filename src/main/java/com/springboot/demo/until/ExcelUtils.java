@@ -1,6 +1,6 @@
 package com.springboot.demo.until;
 
-import com.bs.manage.exception.MyRunException;
+import com.springboot.demo.exception.BusinessException;
 import com.springboot.demo.model.json.ExcelData;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ public class ExcelUtils {
     public static Sheet getSheet(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         if (fileName == null || (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$"))) {
-            throw new MyRunException("上传文件格式不正确");
+            throw new BusinessException("上传文件格式不正确");
         }
         boolean isExcel2003 = true;
         if (fileName.matches("^.+\\.(?i)(xlsx)$")) {
@@ -67,7 +67,7 @@ public class ExcelUtils {
             log.info("总行数:{},开始导入数据到数据库", totalRow);
             return sheet;
         } catch (IOException e) {
-            throw new MyRunException("excel读取失败");
+            throw new BusinessException("excel读取失败");
         }
     }
 
@@ -278,7 +278,7 @@ public class ExcelUtils {
                 return cell.getCellFormula().replace("\"", "");
             } else {
                 System.out.println(cell.getCellType());
-                throw new MyRunException("excel单元格格式不是数字也不是文本");
+                throw new BusinessException("excel单元格格式不是数字也不是文本");
             }
         } else {
             return null;
@@ -303,7 +303,7 @@ public class ExcelUtils {
             } else if (Cell.CELL_TYPE_BLANK == cell.getCellType()) {
                 return null;
             } else {
-                throw new MyRunException("excel单元格格式不是数字也不是文本");
+                throw new BusinessException("excel单元格格式不是数字也不是文本");
             }
         } else {
             return null;
@@ -328,7 +328,7 @@ public class ExcelUtils {
             } else if (Cell.CELL_TYPE_BLANK == cell.getCellType()) {
                 return null;
             } else {
-                throw new MyRunException("excel单元格格式不是数字也不是文本");
+                throw new BusinessException("excel单元格格式不是数字也不是文本");
             }
         } else {
             return null;
@@ -353,7 +353,7 @@ public class ExcelUtils {
             } else if (Cell.CELL_TYPE_BLANK == cell.getCellType()) {
                 return null;
             } else {
-                throw new MyRunException("excel单元格格式不是数字也不是文本");
+                throw new BusinessException("excel单元格格式不是数字也不是文本");
             }
         } else {
             return null;
@@ -378,7 +378,7 @@ public class ExcelUtils {
             } else if (Cell.CELL_TYPE_BLANK == cell.getCellType()) {
                 return null;
             } else {
-                throw new MyRunException("excel单元格格式不是数字也不是文本");
+                throw new BusinessException("excel单元格格式不是数字也不是文本");
             }
         } else {
             return null;
@@ -406,7 +406,7 @@ public class ExcelUtils {
                 return new BigDecimal(cell.getCellFormula().replace("\"", ""));
             } else {
                 System.out.println(cell.getCellType());
-                throw new MyRunException("excel单元格格式不是数字也不是文本");
+                throw new BusinessException("excel单元格格式不是数字也不是文本");
             }
         } else {
             return BigDecimal.ZERO;

@@ -1,5 +1,6 @@
 package com.springboot.demo.intercepter;
 
+import com.alibaba.fastjson2.JSON;
 import com.springboot.demo.annotation.Role;
 import com.springboot.demo.code.CodeCaption;
 import com.springboot.demo.code.PubCode;
@@ -9,8 +10,7 @@ import com.springboot.demo.model.bean.account.UserRole;
 import com.springboot.demo.model.json.ResponseJson;
 import com.springboot.demo.service.user.impl.UserServiceImpl;
 import com.springboot.demo.until.Md5Util;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -34,16 +34,12 @@ import java.util.Optional;
  */
 @Slf4j
 @Component
+@AllArgsConstructor
 public class TokenInterceptor implements HandlerInterceptor {
 
 
-    private final Gson gson;
     private final UserToken userToken;
 
-    public TokenInterceptor(Gson gson, UserToken userToken) {
-        this.gson = gson;
-        this.userToken = userToken;
-    }
 
 
     @Override
@@ -84,8 +80,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             if (user == null) {
                 throw new BusinessException(PubCode.LOGIN_ERROR.code, PubCode.LOGIN_ERROR.message);
             }
-            List<Integer> roleIds = gson.fromJson(user.getResources(), new TypeToken<List<Integer>>() {
-            }.getType());
+            List<Integer> roleIds = JSON.parseArray(user.getResources(),Integer.class);
             user.setRoleIds(roleIds);
 
             //验证权限
@@ -185,7 +180,7 @@ public class TokenInterceptor implements HandlerInterceptor {
      */
     private void printJson(ResponseJson json, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
-        writer.print(gson.toJson(json));
+        writer.print(JSON.toJSONString(json));
         writer.flush();
         writer.close();
     }

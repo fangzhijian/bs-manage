@@ -8,11 +8,11 @@
         <version>3.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>bs-manage</groupId>
+    <groupId>com.springboot.demo</groupId>
     <artifactId>springboot-demo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>bs-manage-parent</name>
-    <description>布诗云客户管理系统</description>
+    <name>springboot-demo-parent</name>
+    <description>springboot demo项目</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -162,10 +162,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
