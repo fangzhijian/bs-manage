@@ -15,6 +15,8 @@ public class DemoTest {
 
     @Test
     public void test1() {
+        String join = String.join(",", "2", "3");
+        System.out.println(join);
     }
 
 

@@ -26,6 +26,13 @@ public @interface RedisSubmit {
     String key() default "#userId";
 
     /**
+     * 用于编辑接口, key示例值 "#param.id"
+     * 当新增时id为空，使用默认#userId判重复
+     * 当修改时id不为空，使用spel表达式获取id判重复
+     */
+    boolean edit() default false;
+
+    /**
      * 防重复提交提示词
      */
     String message() default "正在操作中，请稍后尝试";

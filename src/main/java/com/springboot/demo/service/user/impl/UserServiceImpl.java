@@ -16,6 +16,7 @@ import com.springboot.demo.model.param.user.UserInsertParam;
 import com.springboot.demo.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -206,6 +207,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }
         }
         return ResponseJson.success(roleResultList);
+    }
+
+    /**
+     * 测试
+     */
+    @Override
+    @Async
+    @Transactional
+    public void test() {
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("test");
+        User user = User.builder().id(1L).name("牛大壮").build();
+        this.updateById(user);
+        System.out.println(10/0);
     }
 
 

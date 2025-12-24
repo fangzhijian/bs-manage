@@ -1,6 +1,8 @@
 package com.springboot.demo.controller;
 
 import com.springboot.demo.model.json.XBaseAiJson;
+import com.springboot.demo.service.user.UserService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,7 +22,10 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 @Slf4j
 @RestController
+@AllArgsConstructor
 public class TestController {
+
+    private final UserService userService;
 
     /**
      * 头米ai对话
@@ -44,6 +49,7 @@ public class TestController {
 
     @GetMapping("test")
     public void test() {
-
+        userService.test();
+        System.out.println("is end");
     }
 }

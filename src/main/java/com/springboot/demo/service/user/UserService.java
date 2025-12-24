@@ -74,5 +74,8 @@ public interface UserService extends IService<User> {
      */
     ResponseJson getUserRoles();
 
-
+    /**
+     * 测试
+     */
+    void test();
 }
